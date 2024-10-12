@@ -10,7 +10,11 @@ public class PrimaryController {
 
     @FXML
     private void switchToSecondary() throws IOException {
-        BaVScraper.ConnectToForum();
+        try {
+            BaVScraper.ScrapeSeasons("https://buyavowel.boards.net/page/compendiumindex");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Window.setRoot("secondary");
     }
 }
