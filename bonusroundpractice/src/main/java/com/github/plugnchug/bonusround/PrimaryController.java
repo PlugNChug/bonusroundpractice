@@ -5,16 +5,23 @@ import java.io.IOException;
 import com.github.plugnchug.bonusround.scraper.BaVScraper;
 
 import javafx.fxml.FXML;
+import javafx.util.Pair;
 
 public class PrimaryController {
 
     @FXML
-    private void switchToSecondary() throws IOException {
+    private void webScrape() throws IOException {
         try {
-            BaVScraper.ScrapeSeasons("https://buyavowel.boards.net/page/compendiumindex");
+            BaVScraper.scrapeSeasons("https://buyavowel.boards.net/page/compendiumindex");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Window.setRoot("secondary");
+        
+    }
+
+    @FXML
+    private void beginPuzzle() throws IOException {
+        Pair<String, String> answer = BonusGameBackend.getRandomAnswer();
+        System.out.println(answer.toString());
     }
 }

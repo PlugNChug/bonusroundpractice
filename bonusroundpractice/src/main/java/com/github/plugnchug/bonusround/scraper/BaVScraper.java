@@ -1,6 +1,6 @@
 package com.github.plugnchug.bonusround.scraper;
 
-import java.io.IOException;
+import java.io.*;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -24,15 +24,15 @@ public class BaVScraper {
      * @throws IOException
      * @throws InterruptedException
      */
-    public static void ScrapeSeasons(String url) throws IOException, InterruptedException {
+    public static void scrapeSeasons(String url) throws IOException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREADS);
 
-        GetSeasonPageList(url);
+        getSeasonPageList(url);
 
         for (String page : seasonPageUrlList) {
             executorService.submit(() -> {
                 try {
-                    ScrapeSeasonPage(page);
+                    scrapeSeasonPage(page);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -41,6 +41,14 @@ public class BaVScraper {
 
         executorService.shutdown();
         executorService.awaitTermination(300, TimeUnit.SECONDS);
+
+        File file = new File("answers.csv");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+        for (var a : bonusAnswers) {
+            writer.write(a.getKey() + "," + a.getValue() + "\n");
+        }
+        writer.close();
     }
 
     /**
@@ -48,7 +56,7 @@ public class BaVScraper {
      * @param url The input URL
      * @throws IOException
      */
-    private static void GetSeasonPageList(String url) throws IOException {
+    private static void getSeasonPageList(String url) throws IOException {
         final Document document = Jsoup.connect(url).get();
 
         // Clear the list so there won't be duplicates on subsequent calls
@@ -67,7 +75,7 @@ public class BaVScraper {
     /*
      * Gets all the bonus round answers/categories in the page and adds it to the bonus round list
      */
-    private static void ScrapeSeasonPage(String page) throws IOException {
+    private static void scrapeSeasonPage(String page) throws IOException {
         final Document document = Jsoup.connect(page).get();
 
 
@@ -84,7 +92,7 @@ public class BaVScraper {
 
         // GetDecadeRecap("https://buyavowel.boards.net/thread/17400/season-31-40-recap-directory");
         try {
-            ScrapeSeasons("https://buyavowel.boards.net/page/compendiumindex");
+            scrapeSeasons("https://buyavowel.boards.net/page/compendiumindex");
         } catch (Exception e) {
             e.printStackTrace();
         }
