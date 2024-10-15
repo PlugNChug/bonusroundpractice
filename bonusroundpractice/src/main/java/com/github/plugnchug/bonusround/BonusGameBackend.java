@@ -9,10 +9,6 @@ public class BonusGameBackend {
     // Local variables
     private static List<String> answers = new ArrayList<>();
 
-    private final int FIRST_ROW = 0;
-    private final int SECOND_ROW = 12;
-    private final int THIRD_ROW = 26;
-    private final int FOURTH_ROW = 40;
     public static char[] rstlne = {'r', 's', 't', 'l', 'n', 'e'};
     
     public static Pair<String, String> getRandomAnswer() throws IOException {

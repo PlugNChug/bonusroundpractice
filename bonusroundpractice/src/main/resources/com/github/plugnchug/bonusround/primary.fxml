@@ -15,7 +15,7 @@
             <Image url="@Grid2.png" />
          </image>
       </ImageView>
-      <Pane layoutX="209.0" layoutY="58.0" prefHeight="342.0" prefWidth="861.0">
+      <Pane fx:id="board" layoutX="209.0" layoutY="58.0" prefHeight="342.0" prefWidth="861.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
                <font>
@@ -283,10 +283,15 @@
          <font>
             <Font name="Calibri Bold" size="12.0" />
          </font></Button>
-      <Button layoutX="582.0" layoutY="645.0" onAction="#beginPuzzle" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="Begin Puzzle" textAlignment="CENTER" wrapText="true">
+      <Button layoutX="581.0" layoutY="645.0" onAction="#beginPuzzle" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="Begin Puzzle" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri Bold" size="12.0" />
          </font>
       </Button>
+      <Label fx:id="categoryDisplay" alignment="CENTER" layoutX="440.0" layoutY="417.0" prefWidth="400.0" text="NO PUZZLE LOADED!" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Neue Condensed Bold" size="36.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
