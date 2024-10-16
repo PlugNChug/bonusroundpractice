@@ -55,68 +55,111 @@ public class PrimaryController {
 
         // Split the answer into the rows in a reasonable way
         List<String> words = new ArrayList<>(Arrays.asList(puzzle.getKey().split(" ")));
-        for (String s : words) {
-            System.out.println(s);
-        }
 
         // Play the puzzle reveal sound
         Window.revealPuzzle.play();
 
         // Debug *****************
             // words.clear();
-            // words.add("A");
-            // words.add("DAIQUIRI");
-            // answerLen = 10;
+            // words.add("PAIR");
+            // words.add("OF");
+            // words.add("CHOP");
+            // answerLen = 12;
         // ***********************
         
         int startPos;
 
         List<Integer> wordLengths = new ArrayList<>();
+        Random random = new Random();
 
         // Perform the row splits based how many words there are in the puzzle
         switch (words.size()) {
+            // Very simple case: one word means only one row!
             case 1:
                 animateReveal(words.get(0), SECOND_ROW, MIDDLE_SECOND_THIRD - (answerLen / 2));
                 break;
+            // Gets crazier here...
             case 2:
                 wordLengths.add(words.get(0).length());
                 wordLengths.add(words.get(1).length());
 
-                if (((wordLengths.get(0) < 4 || wordLengths.get(1) < 4) && answerLen < 10) || wordLengths.get(0) <= 2 && answerLen < 14) { 
+                // Certain two word answers (specifically some shorter answers and answers with a one- or two-letter word) will only need one row
+                if (((wordLengths.get(0) < 4 || wordLengths.get(1) < 4) && answerLen < 10) || wordLengths.get(0) <= 2 && answerLen <= 14) { 
                     startPos = (MIDDLE_SECOND_THIRD - (answerLen / 2));
 
                     animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
-                } else if (answerLen >= 10) {
+                } 
+                // On the other hand, longer answers must have two rows
+                else if (answerLen >= 10) {
                     // This block will help with aligning to the larger word
                     if (wordLengths.get(0) > wordLengths.get(1)) {
                         startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(0) / 2));
                     } else {
                         startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(1) / 2));
                     }
+
                     animateReveal(words.get(0), SECOND_ROW, startPos);
                     animateReveal(words.get(1), THIRD_ROW, startPos);
-                } else {
-                    Random random = new Random();
+                } 
+                // Answers that don't fall into the above conditions will have a random chance of being either
+                else {
                     if (random.nextBoolean()) {
                         startPos = (MIDDLE_SECOND_THIRD - (answerLen / 2));
 
                         animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
                     } else {
+                        // This block will help with aligning to the larger word
                         if (wordLengths.get(0) > wordLengths.get(1)) {
                             startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(0) / 2));
                         } else {
                             startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(1) / 2));
                         }
+
                         animateReveal(words.get(0), SECOND_ROW, startPos);
                         animateReveal(words.get(1), THIRD_ROW, startPos);
                     }
                 }
                 break;
+            // Very similar situation to the two word cases
             case 3:
                 wordLengths.add(words.get(0).length());
                 wordLengths.add(words.get(1).length());
                 wordLengths.add(words.get(2).length());
+                
+                // One row three-word answers are pretty rare...
+                if (answerLen < 10) {
+                    animateReveal(words.get(0) + " " + words.get(1) + " " + words.get(2), SECOND_ROW, MIDDLE_SECOND_THIRD - (answerLen / 2));
+                }
+                // ...which means that a two line answer with three words is much more common
+                else {
+                    int comboLength1 = wordLengths.get(0) + wordLengths.get(1) + 1;
+                    int comboLength2 = wordLengths.get(1) + wordLengths.get(2) + 1;
 
+                    if (comboLength1 > comboLength2) {
+                        startPos = (MIDDLE_SECOND_THIRD - (comboLength2 / 2)); 
+
+                        animateReveal(words.get(0), SECOND_ROW, startPos);
+                        animateReveal(words.get(1) + " " + words.get(2), THIRD_ROW, startPos);
+                        
+                    } 
+                    else if (wordLengths.get(0) <= 2 || wordLengths.get(1) <= 2) {
+                        if (wordLengths.get(0) + wordLengths.get(1) + 1 < wordLengths.get(2)) {
+                            startPos = MIDDLE_SECOND_THIRD - (wordLengths.get(2) / 2); 
+                        } else {
+                            startPos = MIDDLE_SECOND_THIRD - (comboLength1 / 2);
+                        }
+                        
+
+                        animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                        animateReveal(words.get(2), THIRD_ROW, startPos);
+                    }
+                    else {
+                        startPos = (MIDDLE_SECOND_THIRD - (comboLength1 / 2));
+
+                        animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                        animateReveal(words.get(2), THIRD_ROW, startPos);
+                    }
+                }
                 break;
             case 4:
                 break;
