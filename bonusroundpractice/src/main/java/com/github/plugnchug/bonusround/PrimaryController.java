@@ -9,7 +9,7 @@ import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
@@ -25,6 +25,8 @@ public class PrimaryController {
     Label categoryDisplay;
     @FXML
     Pane board;
+    @FXML
+    Button beginPuzzleButton;
 
     ObservableList<Node> spaces;
 
@@ -40,7 +42,12 @@ public class PrimaryController {
 
     @FXML
     private void beginPuzzle() throws IOException {
+        // Prevent button spamming that could glitch out the puzzle board
+        beginPuzzleButton.setDisable(true);
+        enableButtonTimer();
+
         Pair<String, String> puzzle = BonusGameBackend.getRandomAnswer();
+        // Pair<String, String> puzzle = BonusGameBackend.snipeWordCount(3);
         
         categoryDisplay.setText(puzzle.getValue());
 
@@ -61,10 +68,20 @@ public class PrimaryController {
 
         // Debug *****************
             // words.clear();
-            // words.add("PAIR");
-            // words.add("OF");
-            // words.add("CHOP");
-            // answerLen = 12;
+            // words.add("i");
+            // words.add("am");
+            // words.add("a");
+            // words.add("man");
+            // words.add("who");
+            // words.add("is");
+            // words.add("a");
+            // words.add("guy");
+            // words.add("lol");
+            // answerLen = 0;
+            // for (String w : words) {
+            //     answerLen += w.length() + 1;
+            // }
+            // answerLen--;
         // ***********************
         
         int startPos;
@@ -148,7 +165,6 @@ public class PrimaryController {
                         } else {
                             startPos = MIDDLE_SECOND_THIRD - (comboLength1 / 2);
                         }
-                        
 
                         animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
                         animateReveal(words.get(2), THIRD_ROW, startPos);
@@ -161,9 +177,66 @@ public class PrimaryController {
                     }
                 }
                 break;
-            case 4:
-                break;
             default:
+                for (int i = 0; i < words.size(); i++) {
+                    wordLengths.add(words.get(i).length());
+                }
+
+                String topString = "";
+                String bottomString = "";
+                int topLength = 0;
+                int bottomLength = 0;
+                int splitIndex = 0;
+                
+                // Prevent lopsided-looking answer by shifting the split forward one word
+                
+                if (answerLen <= 28) {
+                    int modifiedSplit = 0;
+                    int minLetterCountDiff = 14;
+                    for (int i = 0; i < words.size(); i++) {
+                        int tempLen1 = 0;
+                        int tempLen2 = words.get(i).length();
+                        for (int k = 0; k < i; k++) {
+                            tempLen1 += words.get(k).length();
+                            // if (k < i - 1) {
+                            //     tempLen1++;
+                            // }
+                        }
+                        for (int j = i + 1; j < words.size(); j++) {
+                            tempLen2 += words.get(j).length();
+                            // if (j < words.size() - 1) {
+                            //     tempLen2++;
+                            // }
+                        }
+                        System.out.println("FirstLen: " + tempLen1);
+                        System.out.println("SecondLen: " + tempLen2);
+                        if (Math.abs(tempLen1 - tempLen2) < minLetterCountDiff) {
+                            splitIndex = modifiedSplit;
+                            minLetterCountDiff = Math.abs(tempLen1 - tempLen2);
+                        }
+                        modifiedSplit++;
+                    }
+                } else if (topLength - bottomLength >= 5 && splitIndex > 2) {
+                    splitIndex--;
+                }
+                    
+                // Place the words on the board, affected by the split index
+                for (int i = 0; i < words.size(); i++) {
+                    if (i < splitIndex) {
+                        topString += words.get(i) + " ";
+                    } else {
+                        bottomString += words.get(i) + " ";
+                    }
+                }
+
+                if (topString.length() > bottomString.length()) {
+                    startPos = MIDDLE_SECOND_THIRD - (topString.length() / 2); 
+                } else {
+                    startPos = MIDDLE_SECOND_THIRD - (bottomString.length() / 2);
+                }
+
+                animateReveal(topString, SECOND_ROW, startPos);
+                animateReveal(bottomString, THIRD_ROW, startPos);
                 break;
         }
 
@@ -177,19 +250,40 @@ public class PrimaryController {
 
             @Override
             public void handle(long now) {
-                if (now > startTime + 20000000) {
-                    if (!Character.isLetter(words.toCharArray()[position]) && words.toCharArray()[position] != ' ') {
-                        spaces.get(row + startPos + position).setVisible(true);
-                        ((Label) spaces.get(row + startPos + position)).setText(Character.toString(words.toCharArray()[position]));
+                try {
+                    if (now > startTime + 20000000) {
+                        if (!Character.isLetter(words.toCharArray()[position]) && words.toCharArray()[position] != ' ') {
+                            spaces.get(row + startPos + position).setVisible(true);
+                            ((Label) spaces.get(row + startPos + position)).setText(Character.toString(words.toCharArray()[position]));
+                        }
+                        if (words.toCharArray()[position] != ' ') {
+                            spaces.get(row + startPos + position).setVisible(true);
+                        }
+                        startTime = now;
+                        position++;
                     }
-                    if (words.toCharArray()[position] != ' ') {
-                        spaces.get(row + startPos + position).setVisible(true);
+                    
+                    if (position == words.length()) {
+                        stop();
                     }
-                    startTime = now;
-                    position++;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    stop();
                 }
                 
-                if (position == words.length()) {
+            }
+            
+        }.start();
+    }
+
+    private void enableButtonTimer() {
+        new AnimationTimer() {
+            long startTime = System.nanoTime();
+
+            @Override
+            public void handle(long now) {
+                if (now - startTime > 1000000000) {
+                    beginPuzzleButton.setDisable(false);
                     stop();
                 }
             }

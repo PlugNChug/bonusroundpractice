@@ -46,6 +46,9 @@ public class BaVScraper {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
         for (var a : bonusAnswers) {
+            if (a.getKey().isEmpty() || a.getValue().isEmpty() || a.getValue().equals("N/A")) {
+                continue;
+            }
             writer.write(a.getKey() + "," + a.getValue() + "\n");
         }
         writer.close();
