@@ -37,7 +37,7 @@ public class Window extends Application {
     }
 
     public void loadResources() {
-        revealPuzzle = new AudioClip(new File("puzzleReveal.mp3").toURI().toString());
+        revealPuzzle = new AudioClip(new File("resources/puzzleReveal.mp3").toURI().toString());
         
         // The first time a sound effect is played its playback is delayed.
         // This is fixed by playing at zero volume right when it's loaded in
