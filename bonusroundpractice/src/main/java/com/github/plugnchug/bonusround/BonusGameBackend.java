@@ -9,7 +9,7 @@ public class BonusGameBackend {
     // Local variables
     private static List<String> answers = new ArrayList<>();
 
-    public static char[] rstlne = {'r', 's', 't', 'l', 'n', 'e'};
+    public static List<Character> rstlne = new ArrayList<>(Arrays.asList('R', 'S', 'T', 'L', 'N', 'E'));
     
     public static Pair<String, String> getRandomAnswer() throws IOException {
         File file = new File("answers.csv");

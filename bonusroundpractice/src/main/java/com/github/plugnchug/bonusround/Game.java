@@ -1,9 +1,8 @@
 package com.github.plugnchug.bonusround;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.*;
 
@@ -15,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.*;
 import javafx.util.Pair;
 
 public class Game {
@@ -34,10 +32,15 @@ public class Game {
     Button beginPuzzleButton;
 
     ObservableList<Node> spaces;
+    
+    List<Integer> whiteSpacePositions = new ArrayList<>();
 
-    // Sounds and music cues
+    // Sound effects
     public static Sounds puzzleRevealSound = new Sounds("resources/puzzleReveal.wav");
-    public static Sounds dingSound = new Sounds("resources/ding.wav");
+    public static Sounds dingSound1 = new Sounds("resources/ding.wav");
+    public static Sounds dingSound2 = new Sounds("resources/ding.wav");
+
+    // Music cues
     public static Sounds rstlne = new Sounds("resources/rstlne.wav");
     public static Sounds chooseLetters = new Sounds("resources/chooseLetters.wav");
 
@@ -85,20 +88,35 @@ public class Game {
         calculateWordPosition(words, answerLen);
 
         System.out.println(puzzle.getKey() + " - " + answerLen);
+
+        animateLetters(BonusGameBackend.rstlne, words);
     }
 
+    /**
+     * Places the given words in a reasonable manner on the puzzle board.
+     * <p>The bonus round never uses the topmost and bottommost rows.
+     * This also applies to toss-ups and round 4+'s.
+     * 
+     * @param words the list of words in the answer
+     * @param answerLen the length of the answer, including spaces and special characters
+     */
     private void calculateWordPosition(List<String> words, int answerLen) {
+        // startPos represents the calculated leftmost white tile (which should be in the same column for both rows)
         int startPos;
-
+        // wordLengths stores each word in the answer's length for use in calculations
         List<Integer> wordLengths = new ArrayList<>();
+
+        // Random function used in some two word answers to add variety to some layouts
         Random random = new Random();
+
         // Perform the row splits based how many words there are in the puzzle
         switch (words.size()) {
-            // Very simple case: one word means only one row!
+            // Very simple case: one word means only one row, guaranteed!
             case 1:
-                animateReveal(words.get(0), SECOND_ROW, MIDDLE_SECOND_THIRD - (answerLen / 2));
+            startPos = MIDDLE_SECOND_THIRD - (answerLen / 2);
+                animateReveal(words.get(0), SECOND_ROW, startPos);
                 break;
-            // Gets crazier here...
+            // Two word answers go through a much more complicated process since they have many more cases
             case 2:
                 wordLengths.add(words.get(0).length());
                 wordLengths.add(words.get(1).length());
@@ -121,7 +139,7 @@ public class Game {
                     animateReveal(words.get(0), SECOND_ROW, startPos);
                     animateReveal(words.get(1), THIRD_ROW, startPos);
                 } 
-                // Answers that don't fall into the above conditions will have a random chance of being either
+                // Answers that don't fall into the above conditions will have a random chance of being either one or two row answers
                 else {
                     if (random.nextBoolean()) {
                         startPos = (MIDDLE_SECOND_THIRD - (answerLen / 2));
@@ -140,7 +158,7 @@ public class Game {
                     }
                 }
                 break;
-            // Very similar situation to the two word cases
+            // Three word answers go through a similar process to the two word cases
             case 3:
                 wordLengths.add(words.get(0).length());
                 wordLengths.add(words.get(1).length());
@@ -180,6 +198,7 @@ public class Game {
                     }
                 }
                 break;
+            // Four or more word answers will have a more general formula
             default:
                 for (int i = 0; i < words.size(); i++) {
                     wordLengths.add(words.get(i).length());
@@ -258,11 +277,15 @@ public class Game {
             @Override
             public void handle(long now) {
                 try {
-                    if (now > startTime + 20000000) {
+                    // Note this only deals with one row: the row given in the parameters.
+                    // This is why we call this method twice when an answer needs two rows
+                    if (now > startTime + TimeUnit.MILLISECONDS.toNanos(60)) {
+                        // Display any special characters automatically...
                         if (!Character.isLetter(words.toCharArray()[position]) && words.toCharArray()[position] != ' ') {
                             spaces.get(row + startPos + position).setVisible(true);
                             ((Label) spaces.get(row + startPos + position)).setText(Character.toString(words.toCharArray()[position]));
                         }
+                        //...but don't activate tiles where a space would be!
                         if (words.toCharArray()[position] != ' ') {
                             spaces.get(row + startPos + position).setVisible(true);
                         }
@@ -282,6 +305,127 @@ public class Game {
             
         }.start();
     }
+
+    private void animateLetters(List<Character> letters, List<String> words) {
+    new AnimationTimer() {
+        long startTime = 0;
+        boolean initialized = false;
+        boolean revealStarted = false;
+
+        List<Pair<Character, Integer>> letterAssignments = new ArrayList<>();
+        int[] revealOrder = {25, 39, 24, 38, 23, 37, 22, 36, 21, 35, 20, 34, 19, 33, 18, 32, 17, 31, 16, 30, 15, 29, 14, 28, 13, 27, 12, 26};
+
+        @Override
+        public void handle(long now) {
+            if (startTime == 0) {
+                startTime = now;
+            }
+
+            try {
+                long elapsedTime = now - startTime;
+
+                // 2.25 second delay until list initialization
+                if (!initialized && elapsedTime >= TimeUnit.MILLISECONDS.toNanos(2250)) {
+                    initializeLetterAssignments(words);
+                    initialized = true;
+                }
+
+                // 2.5 second delay until letter reveals
+                if (initialized && (revealStarted || elapsedTime >= TimeUnit.MILLISECONDS.toNanos(2500))) {
+                    revealStarted = true;
+
+                    // Reveal letters every 1.1 seconds
+                    if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(1100)) {
+                        startTime = now;
+                        boolean letterRevealed = revealNextLetter(letters);
+
+                        // Stop if no letters were revealed
+                        if (!letterRevealed) {
+                            System.out.println("Done revealing letters!");
+                            stop();
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                stop();
+            }
+        }
+
+        // Create list of letter-position pairs
+        private void initializeLetterAssignments(List<String> words) {
+            whiteSpacePositions.clear();
+            for (Node space : spaces) {
+                if (space.isVisible()) {
+                    whiteSpacePositions.add(spaces.indexOf(space));
+                }
+            }
+
+            int counter = 0;
+            for (String word : words) {
+                for (char letter : word.toCharArray()) {
+                    letterAssignments.add(new Pair<>(letter, whiteSpacePositions.get(counter)));
+                    counter++;
+                }
+            }
+        }
+
+        private boolean revealNextLetter(List<Character> letters) {
+            for (int space : revealOrder) {
+                // Skip unactivated tiles
+                if (!spaces.get(space).isVisible()) {
+                    continue;
+                }
+
+                for (Pair<Character, Integer> assignment : letterAssignments) {
+                    if (assignment.getValue() == space && letters.contains(assignment.getKey())) {
+                        Label label = (Label) spaces.get(space);
+                        if (label.getStyle().compareTo("-fx-background-color: white; -fx-background-radius: 1;") == 0 && label.getText().isEmpty()) {
+                            blueScreen(label, assignment.getKey().toString());
+                            playSound();
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Alternate between the two ding sounds since I encountered lag here
+        private void playSound() {
+            if (dingSound1.isPlaying()) {
+                dingSound2.play(1);
+            } else {
+                dingSound1.play(1);
+            }
+        }
+        
+    }.start();
+}
+
+private void blueScreen(Label label, String letter) {
+    new AnimationTimer() {
+        long startTime = 0;
+        Random random = new Random();
+        @Override
+        public void handle(long now) {
+            label.setStyle("-fx-background-color: #5656fa; -fx-background-radius: 1;");
+            if (startTime == 0) {
+                startTime = now;
+            }
+
+            long elapsedTime = now - startTime;
+            // After the blue screen, the letter will take between 2.2s and 3.2s to be revealed
+            if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(2800 + random.nextInt(-600, 400))) {
+                label.setStyle("-fx-background-color: white; -fx-background-radius: 1;");
+                label.setText(letter);
+                stop();
+            }
+        }
+    }.start();
+}
+
 
     private void enableButtonTimer() {
         new AnimationTimer() {

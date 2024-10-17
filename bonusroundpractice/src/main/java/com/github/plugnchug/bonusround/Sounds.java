@@ -15,6 +15,8 @@ public class Sounds {
         try {
             clip = AudioSystem.getClip();
             url = new File(fileName).toURI().toURL();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
+            clip.open(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,12 +31,6 @@ public class Sounds {
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
-
-                    if (!clip.isOpen()) {
-                        clip.open(inputStream);
-                    }
-
                     // Set the volume
                     ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(20f * (float) Math.log10(volume));
 
@@ -43,6 +39,7 @@ public class Sounds {
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
                     }
 
+                    clip.setFramePosition(0);
                     clip.start();
 
                 } catch (Exception e) {
@@ -56,6 +53,14 @@ public class Sounds {
         if (clip != null && clip.isRunning()) {
             clip.stop();
             clip.close();
+        }
+    }
+
+    public boolean isPlaying() {
+        if (clip != null && clip.isRunning()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
