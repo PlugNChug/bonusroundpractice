@@ -1,7 +1,11 @@
 package com.github.plugnchug.bonusround;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
+
+import javax.sound.sampled.*;
 
 import com.github.plugnchug.bonusround.scraper.BaVScraper;
 
@@ -11,9 +15,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.*;
 import javafx.util.Pair;
 
-public class PrimaryController {
+public class Game {
     private final int FIRST_ROW = 0;
     private final int SECOND_ROW = 12;
     private final int THIRD_ROW = 26;
@@ -30,6 +35,15 @@ public class PrimaryController {
 
     ObservableList<Node> spaces;
 
+    // Sounds and music cues
+    public static Sounds puzzleRevealSound = new Sounds("resources/puzzleReveal.wav");
+    public static Sounds dingSound = new Sounds("resources/ding.wav");
+    public static Sounds rstlne = new Sounds("resources/rstlne.wav");
+    public static Sounds chooseLetters = new Sounds("resources/chooseLetters.wav");
+
+
+    
+
     @FXML
     private void webScrape() throws IOException {
         try {
@@ -41,7 +55,7 @@ public class PrimaryController {
     }
 
     @FXML
-    private void beginPuzzle() throws IOException {
+    private void beginPuzzle() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         // Prevent button spamming that could glitch out the puzzle board
         beginPuzzleButton.setDisable(true);
         enableButtonTimer();
@@ -58,37 +72,26 @@ public class PrimaryController {
             ((Label) space).setText("");
         }
         
+        // Get answer length
         int answerLen = puzzle.getKey().length();
 
         // Split the answer into the rows in a reasonable way
         List<String> words = new ArrayList<>(Arrays.asList(puzzle.getKey().split(" ")));
 
-        // Play the puzzle reveal sound
-        Window.revealPuzzle.play();
+        // Begin music cues
+        chooseLetters.stop();
+        rstlne.play(1, true);
 
-        // Debug *****************
-            // words.clear();
-            // words.add("i");
-            // words.add("am");
-            // words.add("a");
-            // words.add("man");
-            // words.add("who");
-            // words.add("is");
-            // words.add("a");
-            // words.add("guy");
-            // words.add("lol");
-            // answerLen = 0;
-            // for (String w : words) {
-            //     answerLen += w.length() + 1;
-            // }
-            // answerLen--;
-        // ***********************
-        
+        calculateWordPosition(words, answerLen);
+
+        System.out.println(puzzle.getKey() + " - " + answerLen);
+    }
+
+    private void calculateWordPosition(List<String> words, int answerLen) {
         int startPos;
 
         List<Integer> wordLengths = new ArrayList<>();
         Random random = new Random();
-
         // Perform the row splits based how many words there are in the puzzle
         switch (words.size()) {
             // Very simple case: one word means only one row!
@@ -239,8 +242,12 @@ public class PrimaryController {
                 animateReveal(bottomString, THIRD_ROW, startPos);
                 break;
         }
+    }
 
-        System.out.println(puzzle.getKey() + " - " + answerLen);
+    @FXML
+    private void stopSounds() {
+        rstlne.stop();
+        chooseLetters.play(1, true);
     }
 
     private void animateReveal(String words, int row, int startPos) {
