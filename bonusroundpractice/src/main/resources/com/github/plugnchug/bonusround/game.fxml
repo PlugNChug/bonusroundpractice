@@ -279,13 +279,13 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="40.0" layoutY="645.0" onAction="#webScrape" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="Get Bonus Puzzles from the Web" textAlignment="CENTER" wrapText="true">
+      <Button layoutX="40.0" layoutY="645.0" onAction="#webScrape" prefHeight="46.0" prefWidth="114.0" stylesheets="@styles.css" text="Get Bonus Puzzles from the Web" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri Bold" size="12.0" />
          </font></Button>
       <Button fx:id="beginPuzzleButton" layoutX="581.0" layoutY="645.0" onAction="#beginPuzzle" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="Begin Puzzle" textAlignment="CENTER" wrapText="true">
          <font>
-            <Font name="Calibri Bold" size="12.0" />
+            <Font name="Calibri Bold" size="16.0" />
          </font>
       </Button>
       <Label fx:id="categoryDisplay" alignment="CENTER" layoutX="440.0" layoutY="417.0" prefWidth="400.0" text="NO PUZZLE LOADED!" textAlignment="CENTER">
@@ -293,9 +293,9 @@
             <Font name="Helvetica Neue Condensed Bold" size="36.0" />
          </font>
       </Label>
-      <Button layoutX="725.0" layoutY="645.0" onAction="#stopSounds" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="Stop Sounds" textAlignment="CENTER" wrapText="true">
+      <Button layoutX="725.0" layoutY="645.0" onAction="#stopSounds" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="R S T L N E" textAlignment="CENTER" wrapText="true">
          <font>
-            <Font name="Calibri Bold" size="12.0" />
+            <Font name="Calibri Bold" size="18.0" />
          </font>
       </Button>
    </children>

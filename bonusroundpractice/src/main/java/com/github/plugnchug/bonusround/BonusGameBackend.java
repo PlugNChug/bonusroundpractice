@@ -6,11 +6,22 @@ import java.util.*;
 import javafx.util.Pair;
 
 public class BonusGameBackend {
-    // Local variables
+    // Variables
+    public static List<Character> rstlne = new ArrayList<>(Arrays.asList('R', 'S', 'T', 'L', 'N', 'E'));
+
+    // private static final int FIRST_ROW = 0;
+    private static final int SECOND_ROW = 12;
+    private static final int THIRD_ROW = 26;
+    // private static final int FOURTH_ROW = 40;
+    // private static final int MIDDLE_FIRST_FOURTH = 6;
+    private static final int MIDDLE_SECOND_THIRD = 7;
     private static List<String> answers = new ArrayList<>();
 
-    public static List<Character> rstlne = new ArrayList<>(Arrays.asList('R', 'S', 'T', 'L', 'N', 'E'));
-    
+    /**
+     * Checks the answers.csv file generated using the "Get Bonus Puzzles from the Web" button, shuffles the rows, and picks the first row
+     * @return A random answer and category as a pair
+     * @throws IOException
+     */
     public static Pair<String, String> getRandomAnswer() throws IOException {
         File file = new File("answers.csv");
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -44,5 +55,176 @@ public class BonusGameBackend {
 
         Collections.shuffle(answers);
         return new Pair<String,String>(answers.get(0).split(",")[0], answers.get(0).split(",")[1]);
+    }
+
+    /**
+     * Places the given words in a reasonable manner on the puzzle board.
+     * <p>The bonus round never uses the topmost and bottommost rows.
+     * This also applies to toss-ups and round 4+'s.
+     * 
+     * @param words the list of words in the answer
+     * @param answerLen the length of the answer, including spaces and special characters
+     */
+    public static void calculateWordPosition(List<String> words, int answerLen) {
+        // startPos represents the calculated leftmost white tile (which should be in the same column for both rows)
+        int startPos;
+        // wordLengths stores each word in the answer's length for use in calculations
+        List<Integer> wordLengths = new ArrayList<>();
+
+        // Random function used in some two word answers to add variety to some layouts
+        Random random = new Random();
+
+        // Perform the row splits based how many words there are in the puzzle
+        switch (words.size()) {
+            // Very simple case: one word means only one row, guaranteed!
+            case 1:
+            startPos = MIDDLE_SECOND_THIRD - (answerLen / 2);
+                Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
+                break;
+            // Two word answers go through a much more complicated process since they have many more cases
+            case 2:
+                wordLengths.add(words.get(0).length());
+                wordLengths.add(words.get(1).length());
+
+                // Certain two word answers (specifically some shorter answers and answers with a one- or two-letter word) will only need one row
+                if (((wordLengths.get(0) < 4 || wordLengths.get(1) < 4) && answerLen < 10) || wordLengths.get(0) <= 2 && answerLen <= 14) { 
+                    startPos = (MIDDLE_SECOND_THIRD - (answerLen / 2));
+
+                    Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                } 
+                // On the other hand, longer answers must have two rows
+                else if (answerLen >= 10) {
+                    // This block will help with aligning to the larger word
+                    if (wordLengths.get(0) > wordLengths.get(1)) {
+                        startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(0) / 2));
+                    } else {
+                        startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(1) / 2));
+                    }
+
+                    Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
+                    Animators.animateReveal(words.get(1), THIRD_ROW, startPos);
+                } 
+                // Answers that don't fall into the above conditions will have a random chance of being either one or two row answers
+                else {
+                    if (random.nextBoolean()) {
+                        startPos = (MIDDLE_SECOND_THIRD - (answerLen / 2));
+
+                        Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                    } else {
+                        // This block will help with aligning to the larger word
+                        if (wordLengths.get(0) > wordLengths.get(1)) {
+                            startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(0) / 2));
+                        } else {
+                            startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(1) / 2));
+                        }
+
+                        Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
+                        Animators.animateReveal(words.get(1), THIRD_ROW, startPos);
+                    }
+                }
+                break;
+            // Three word answers go through a similar process to the two word cases
+            case 3:
+                wordLengths.add(words.get(0).length());
+                wordLengths.add(words.get(1).length());
+                wordLengths.add(words.get(2).length());
+                
+                // One row three-word answers are pretty rare...
+                if (answerLen < 10) {
+                    Animators.animateReveal(words.get(0) + " " + words.get(1) + " " + words.get(2), SECOND_ROW, MIDDLE_SECOND_THIRD - (answerLen / 2));
+                }
+                // ...which means that a two line answer with three words is much more common
+                else {
+                    int comboLength1 = wordLengths.get(0) + wordLengths.get(1) + 1;
+                    int comboLength2 = wordLengths.get(1) + wordLengths.get(2) + 1;
+
+                    if (comboLength1 > comboLength2) {
+                        startPos = (MIDDLE_SECOND_THIRD - (comboLength2 / 2)); 
+
+                        Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
+                        Animators.animateReveal(words.get(1) + " " + words.get(2), THIRD_ROW, startPos);
+                        
+                    } 
+                    else if (wordLengths.get(0) <= 2 || wordLengths.get(1) <= 2) {
+                        if (wordLengths.get(0) + wordLengths.get(1) + 1 < wordLengths.get(2)) {
+                            startPos = MIDDLE_SECOND_THIRD - (wordLengths.get(2) / 2); 
+                        } else {
+                            startPos = MIDDLE_SECOND_THIRD - (comboLength1 / 2);
+                        }
+
+                        Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                        Animators.animateReveal(words.get(2), THIRD_ROW, startPos);
+                    }
+                    else {
+                        startPos = (MIDDLE_SECOND_THIRD - (comboLength1 / 2));
+
+                        Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                        Animators.animateReveal(words.get(2), THIRD_ROW, startPos);
+                    }
+                }
+                break;
+            // Four or more word answers will have a more general formula
+            default:
+                for (int i = 0; i < words.size(); i++) {
+                    wordLengths.add(words.get(i).length());
+                }
+
+                String topString = "";
+                String bottomString = "";
+                int topLength = 0;
+                int bottomLength = 0;
+                int splitIndex = 0;
+                
+                // Prevent lopsided-looking answer by shifting the split forward one word
+                
+                if (answerLen <= 28) {
+                    int modifiedSplit = 0;
+                    int minLetterCountDiff = 14;
+                    for (int i = 0; i < words.size(); i++) {
+                        int tempLen1 = 0;
+                        int tempLen2 = words.get(i).length();
+                        for (int k = 0; k < i; k++) {
+                            tempLen1 += words.get(k).length();
+                            // if (k < i - 1) {
+                            //     tempLen1++;
+                            // }
+                        }
+                        for (int j = i + 1; j < words.size(); j++) {
+                            tempLen2 += words.get(j).length();
+                            // if (j < words.size() - 1) {
+                            //     tempLen2++;
+                            // }
+                        }
+                        System.out.println("FirstLen: " + tempLen1);
+                        System.out.println("SecondLen: " + tempLen2);
+                        if (Math.abs(tempLen1 - tempLen2) < minLetterCountDiff) {
+                            splitIndex = modifiedSplit;
+                            minLetterCountDiff = Math.abs(tempLen1 - tempLen2);
+                        }
+                        modifiedSplit++;
+                    }
+                } else if (topLength - bottomLength >= 5 && splitIndex > 2) {
+                    splitIndex--;
+                }
+                    
+                // Place the words on the board, affected by the split index
+                for (int i = 0; i < words.size(); i++) {
+                    if (i < splitIndex) {
+                        topString += words.get(i) + " ";
+                    } else {
+                        bottomString += words.get(i) + " ";
+                    }
+                }
+
+                if (topString.length() > bottomString.length()) {
+                    startPos = MIDDLE_SECOND_THIRD - (topString.length() / 2); 
+                } else {
+                    startPos = MIDDLE_SECOND_THIRD - (bottomString.length() / 2);
+                }
+
+                Animators.animateReveal(topString, SECOND_ROW, startPos);
+                Animators.animateReveal(bottomString, THIRD_ROW, startPos);
+                break;
+        }
     }
 }

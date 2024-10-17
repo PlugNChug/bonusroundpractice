@@ -1,0 +1,14 @@
+.button {
+    -fx-background-color: lightgray;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2;
+
+}
+
+.button:hover {
+    -fx-border-color: #2a905c;
+}
+
+.button:armed {
+    -fx-background-color: gray;
+}
