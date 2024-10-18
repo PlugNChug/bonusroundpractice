@@ -17,12 +17,18 @@ public class BonusGameBackend {
     private static final int MIDDLE_SECOND_THIRD = 7;
     private static List<String> answers = new ArrayList<>();
 
+    private Animators animation;
+
+    public BonusGameBackend(Animators anim) {
+        this.animation = anim;
+    }
+
     /**
      * Checks the answers.csv file generated using the "Get Bonus Puzzles from the Web" button, shuffles the rows, and picks the first row
      * @return A random answer and category as a pair
      * @throws IOException
      */
-    public static Pair<String, String> getRandomAnswer() throws IOException {
+    public Pair<String, String> getRandomAnswer() throws IOException {
         File file = new File("answers.csv");
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
@@ -39,7 +45,7 @@ public class BonusGameBackend {
         return new Pair<String,String>(answers.get(index).split(",")[0], answers.get(index).split(",")[1]);
     }
 
-    public static Pair<String, String> snipeWordCount(int wordCount) throws IOException {
+    public Pair<String, String> snipeWordCount(int wordCount) throws IOException {
 
         File file = new File("answers.csv");
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -65,7 +71,7 @@ public class BonusGameBackend {
      * @param words the list of words in the answer
      * @param answerLen the length of the answer, including spaces and special characters
      */
-    public static void calculateWordPosition(List<String> words, int answerLen) {
+    public void calculateWordPosition(List<String> words, int answerLen) {
         // startPos represents the calculated leftmost white tile (which should be in the same column for both rows)
         int startPos;
         // wordLengths stores each word in the answer's length for use in calculations
@@ -79,7 +85,7 @@ public class BonusGameBackend {
             // Very simple case: one word means only one row, guaranteed!
             case 1:
             startPos = MIDDLE_SECOND_THIRD - (answerLen / 2);
-                Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
+                animation.animateReveal(words.get(0), SECOND_ROW, startPos);
                 break;
             // Two word answers go through a much more complicated process since they have many more cases
             case 2:
@@ -90,7 +96,7 @@ public class BonusGameBackend {
                 if (((wordLengths.get(0) < 4 || wordLengths.get(1) < 4) && answerLen < 10) || wordLengths.get(0) <= 2 && answerLen <= 14) { 
                     startPos = (MIDDLE_SECOND_THIRD - (answerLen / 2));
 
-                    Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                    animation.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
                 } 
                 // On the other hand, longer answers must have two rows
                 else if (answerLen >= 10) {
@@ -101,15 +107,15 @@ public class BonusGameBackend {
                         startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(1) / 2));
                     }
 
-                    Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
-                    Animators.animateReveal(words.get(1), THIRD_ROW, startPos);
+                    animation.animateReveal(words.get(0), SECOND_ROW, startPos);
+                    animation.animateReveal(words.get(1), THIRD_ROW, startPos);
                 } 
                 // Answers that don't fall into the above conditions will have a random chance of being either one or two row answers
                 else {
                     if (random.nextBoolean()) {
                         startPos = (MIDDLE_SECOND_THIRD - (answerLen / 2));
 
-                        Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                        animation.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
                     } else {
                         // This block will help with aligning to the larger word
                         if (wordLengths.get(0) > wordLengths.get(1)) {
@@ -118,8 +124,8 @@ public class BonusGameBackend {
                             startPos = (MIDDLE_SECOND_THIRD - (wordLengths.get(1) / 2));
                         }
 
-                        Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
-                        Animators.animateReveal(words.get(1), THIRD_ROW, startPos);
+                        animation.animateReveal(words.get(0), SECOND_ROW, startPos);
+                        animation.animateReveal(words.get(1), THIRD_ROW, startPos);
                     }
                 }
                 break;
@@ -131,9 +137,11 @@ public class BonusGameBackend {
                 
                 // One row three-word answers are pretty rare...
                 if (answerLen < 10) {
-                    Animators.animateReveal(words.get(0) + " " + words.get(1) + " " + words.get(2), SECOND_ROW, MIDDLE_SECOND_THIRD - (answerLen / 2));
+                    animation.animateReveal(words.get(0) + " " + words.get(1) + " " + words.get(2), SECOND_ROW, MIDDLE_SECOND_THIRD - (answerLen / 2));
                 }
-                // ...which means that a two line answer with three words is much more common
+                // ...which means that a two line answer with three words is much more common.
+                // This block tracks the combinations of the first and second words and the second and third words.
+                // The lengths of each combination are taken into account when determining the board layout.
                 else {
                     int comboLength1 = wordLengths.get(0) + wordLengths.get(1) + 1;
                     int comboLength2 = wordLengths.get(1) + wordLengths.get(2) + 1;
@@ -141,8 +149,8 @@ public class BonusGameBackend {
                     if (comboLength1 > comboLength2) {
                         startPos = (MIDDLE_SECOND_THIRD - (comboLength2 / 2)); 
 
-                        Animators.animateReveal(words.get(0), SECOND_ROW, startPos);
-                        Animators.animateReveal(words.get(1) + " " + words.get(2), THIRD_ROW, startPos);
+                        animation.animateReveal(words.get(0), SECOND_ROW, startPos);
+                        animation.animateReveal(words.get(1) + " " + words.get(2), THIRD_ROW, startPos);
                         
                     } 
                     else if (wordLengths.get(0) <= 2 || wordLengths.get(1) <= 2) {
@@ -152,14 +160,14 @@ public class BonusGameBackend {
                             startPos = MIDDLE_SECOND_THIRD - (comboLength1 / 2);
                         }
 
-                        Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
-                        Animators.animateReveal(words.get(2), THIRD_ROW, startPos);
+                        animation.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                        animation.animateReveal(words.get(2), THIRD_ROW, startPos);
                     }
                     else {
                         startPos = (MIDDLE_SECOND_THIRD - (comboLength1 / 2));
 
-                        Animators.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
-                        Animators.animateReveal(words.get(2), THIRD_ROW, startPos);
+                        animation.animateReveal(words.get(0) + " " + words.get(1), SECOND_ROW, startPos);
+                        animation.animateReveal(words.get(2), THIRD_ROW, startPos);
                     }
                 }
                 break;
@@ -176,34 +184,31 @@ public class BonusGameBackend {
                 int splitIndex = 0;
                 
                 // Prevent lopsided-looking answer by shifting the split forward one word
-                
                 if (answerLen <= 28) {
                     int modifiedSplit = 0;
                     int minLetterCountDiff = 14;
+
+                    // Loop through combinations of row lengths given the answer words, and find the best combination of words to split between two rows
                     for (int i = 0; i < words.size(); i++) {
-                        int tempLen1 = 0;
-                        int tempLen2 = words.get(i).length();
+                        int rowLen1 = 0;
+                        int rowLen2 = words.get(i).length();
                         for (int k = 0; k < i; k++) {
-                            tempLen1 += words.get(k).length();
-                            // if (k < i - 1) {
-                            //     tempLen1++;
-                            // }
+                            rowLen1 += words.get(k).length();
                         }
                         for (int j = i + 1; j < words.size(); j++) {
-                            tempLen2 += words.get(j).length();
-                            // if (j < words.size() - 1) {
-                            //     tempLen2++;
-                            // }
+                            rowLen2 += words.get(j).length();
                         }
-                        System.out.println("FirstLen: " + tempLen1);
-                        System.out.println("SecondLen: " + tempLen2);
-                        if (Math.abs(tempLen1 - tempLen2) < minLetterCountDiff) {
+
+                        // Update the min letter count difference if there's a new lowest difference between row lengths
+                        if (Math.abs(rowLen1 - rowLen2) < minLetterCountDiff) {
                             splitIndex = modifiedSplit;
-                            minLetterCountDiff = Math.abs(tempLen1 - tempLen2);
+                            minLetterCountDiff = Math.abs(rowLen1 - rowLen2);
                         }
                         modifiedSplit++;
                     }
-                } else if (topLength - bottomLength >= 5 && splitIndex > 2) {
+                } 
+                // Make some edge cases look better on the board
+                else if (topLength - bottomLength >= 5 && splitIndex > 2) {
                     splitIndex--;
                 }
                     
@@ -216,14 +221,15 @@ public class BonusGameBackend {
                     }
                 }
 
+                // Left-align the rows
                 if (topString.length() > bottomString.length()) {
                     startPos = MIDDLE_SECOND_THIRD - (topString.length() / 2); 
                 } else {
                     startPos = MIDDLE_SECOND_THIRD - (bottomString.length() / 2);
                 }
 
-                Animators.animateReveal(topString, SECOND_ROW, startPos);
-                Animators.animateReveal(bottomString, THIRD_ROW, startPos);
+                animation.animateReveal(topString, SECOND_ROW, startPos);
+                animation.animateReveal(bottomString, THIRD_ROW, startPos);
                 break;
         }
     }

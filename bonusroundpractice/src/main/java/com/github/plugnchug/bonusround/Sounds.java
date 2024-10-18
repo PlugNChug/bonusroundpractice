@@ -15,8 +15,6 @@ public class Sounds {
         try {
             clip = AudioSystem.getClip();
             url = new File(fileName).toURI().toURL();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
-            clip.open(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,6 +29,11 @@ public class Sounds {
         new Thread(new Runnable() {
             public void run() {
                 try {
+                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
+                    if (!clip.isOpen()) {
+                        clip.open(inputStream);
+                    }
+                    
                     // Set the volume
                     ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(20f * (float) Math.log10(volume));
 

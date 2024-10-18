@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.plugnchug.bonusround.Game">
@@ -283,20 +287,262 @@
          <font>
             <Font name="Calibri Bold" size="12.0" />
          </font></Button>
-      <Button fx:id="beginPuzzleButton" layoutX="581.0" layoutY="645.0" onAction="#beginPuzzle" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="Begin Puzzle" textAlignment="CENTER" wrapText="true">
-         <font>
-            <Font name="Calibri Bold" size="16.0" />
-         </font>
-      </Button>
-      <Label fx:id="categoryDisplay" alignment="CENTER" layoutX="440.0" layoutY="417.0" prefWidth="400.0" text="NO PUZZLE LOADED!" textAlignment="CENTER">
-         <font>
-            <Font name="Helvetica Neue Condensed Bold" size="36.0" />
-         </font>
-      </Label>
-      <Button layoutX="725.0" layoutY="645.0" onAction="#stopSounds" prefHeight="46.0" prefWidth="114.0" style="-fx-background-color: lightgray;" text="R S T L N E" textAlignment="CENTER" wrapText="true">
+      <Button fx:id="beginPuzzleButton" layoutX="578.0" layoutY="645.0" onAction="#beginPuzzle" prefHeight="46.0" prefWidth="122.0" stylesheets="@styles.css" text="Begin Puzzle" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri Bold" size="18.0" />
          </font>
       </Button>
+      <Label fx:id="categoryDisplay" alignment="CENTER" layoutX="439.0" layoutY="400.0" prefWidth="400.0" text="NO PUZZLE LOADED!" textAlignment="CENTER">
+         <font>
+            <Font name="Helvetica Neue Condensed Bold" size="36.0" />
+         </font>
+      </Label>
+      <Button layoutX="946.0" layoutY="645.0" onAction="#requestStop" prefHeight="46.0" prefWidth="114.0" stylesheets="@styles.css" text="Stop Round" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Button>
+      <HBox fx:id="consonants" alignment="CENTER" disable="true" layoutX="9.0" layoutY="461.0" prefHeight="53.0" prefWidth="1260.0">
+         <children>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="B" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="C" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="D" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="F" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="G" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="H" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="J" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="K" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="L" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="M" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="N" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="P" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="Q" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="R" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="S" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="T" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="V" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="W" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="X" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="Y" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="Z" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <HBox fx:id="vowels" alignment="CENTER" disable="true" layoutX="10.0" layoutY="530.0" prefHeight="53.0" prefWidth="1260.0">
+         <children>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="A" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="E" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="I" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="O" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="U" textAlignment="CENTER" textOverrun="CLIP">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+            </Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <VBox fx:id="settings" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="188.0">
+         <children>
+            <CheckBox fx:id="rstlneCheckBox" mnemonicParsing="false" onAction="#modifyRSTLNE" selected="true" text="Enable RSTLNE">
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </CheckBox>
+            <CheckBox fx:id="wildCardCheckBox" mnemonicParsing="false" onAction="#modifyWildCard" text="Enable Wild Card">
+               <font>
+                  <Font name="Calibri Bold" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </CheckBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
