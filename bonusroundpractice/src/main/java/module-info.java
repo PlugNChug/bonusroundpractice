@@ -1,5 +1,5 @@
 module com.github.plugnchug.bonusround {
-    requires javafx.controls;
+    requires transitive javafx.controls;
     requires javafx.fxml;
     requires javafx.base;
     requires transitive javafx.media;

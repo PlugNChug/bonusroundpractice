@@ -6,8 +6,11 @@ import java.util.*;
 import javafx.util.Pair;
 
 public class BonusGameBackend {
-    // Variables
-    public static List<Character> rstlne = new ArrayList<>(Arrays.asList('R', 'S', 'T', 'L', 'N', 'E'));
+    // Public variables
+    public static final List<Character> rstlne = new ArrayList<>(Arrays.asList('R', 'S', 'T', 'L', 'N', 'E'));
+    public List<Character> vowelList = new ArrayList<>(Arrays.asList('A', 'E', 'I', 'O', 'U'));
+    public List<Character> chosenLetters = new ArrayList<>();
+    public int limit;
 
     // private static final int FIRST_ROW = 0;
     private static final int SECOND_ROW = 12;
@@ -19,8 +22,12 @@ public class BonusGameBackend {
 
     private Animators animation;
 
-    public BonusGameBackend(Animators anim) {
-        this.animation = anim;
+    public BonusGameBackend(boolean enableWildCard) {
+        limit = enableWildCard ? 4 : 3;
+    }
+
+    public void linkAnimation(Animators anim) {
+        animation = anim;
     }
 
     /**
