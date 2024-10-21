@@ -24,12 +24,14 @@ public class Game {
 
     // Music cues
     public static Sounds rstlne = new Sounds("resources/rstlne.wav");
-    public static Sounds chooseLetters = new Sounds("resources/chooseLetters.wav");
+    public static Sounds chooseLetters = new Sounds("resources/chooseLetters2.wav");
     public static Sounds bonusClock = new Sounds("resources/bonusClock.wav");
 
     // Game settings
-    public static boolean enableRSTLNE = true;
+    public static boolean noRSTLNE = false;
     public static boolean enableWildCard = false;
+    public static boolean fastMode = false;
+    public static boolean specificWordCount = false;
 
     // Animation/behind the scenes helpers
     Animators animation;
@@ -57,6 +59,12 @@ public class Game {
     CheckBox rstlneCheckBox;
     @FXML
     CheckBox wildCardCheckBox;
+    @FXML
+    CheckBox fastModeCheckBox;
+    @FXML
+    CheckBox wordCountCheckBox;
+    @FXML
+    Slider wordCountSlider;
     @FXML
     TextField answerField;
 
@@ -107,17 +115,20 @@ public class Game {
         consonantCounter = 0;
 
         // Initialize the game's backend stuff
-        bonusGameFunctionality = new BonusGameBackend(enableWildCard);
+        bonusGameFunctionality = new BonusGameBackend(noRSTLNE, enableWildCard);
 
         // Get a random puzzle
-        puzzle = bonusGameFunctionality.getRandomAnswer();
-        // Pair<String, String> puzzle = bonusGameFunctionality.snipeWordCount(2);
+        if (specificWordCount) {
+            puzzle = bonusGameFunctionality.snipeWordCount((int) Math.round(wordCountSlider.getValue()));
+        } else {
+            puzzle = bonusGameFunctionality.getRandomAnswer();
+        }
 
         // Split the answer into the rows in a reasonable way
         words = new ArrayList<>(Arrays.asList(puzzle.getKey().split(" ")));
 
         // Initialize animations
-        animation = new Animators(words, enableRSTLNE);
+        animation = new Animators(words, noRSTLNE, fastMode);
         linkAnimations();
         bonusGameFunctionality.linkAnimation(animation);
         
@@ -198,7 +209,7 @@ public class Game {
 
         if (!bonusGameFunctionality.vowelList.contains(letter)) {
             consonantCounter++;
-            if (consonantCounter >= bonusGameFunctionality.limit) {
+            if (consonantCounter >= bonusGameFunctionality.consonantLimit) {
                 consonants.setDisable(true);
             }
         } else {
@@ -228,9 +239,9 @@ public class Game {
     @FXML
     private void modifyRSTLNE() {
         if (rstlneCheckBox.isSelected()) {
-            enableRSTLNE = true;
+            noRSTLNE = true;
         } else {
-            enableRSTLNE = false;
+            noRSTLNE = false;
         }
     }
 
@@ -240,6 +251,26 @@ public class Game {
             enableWildCard = true;
         } else {
             enableWildCard = false;
+        }
+    }
+
+    @FXML
+    private void modifyFastMode() {
+        if (fastModeCheckBox.isSelected()) {
+            fastMode = true;
+        } else {
+            fastMode = false;
+        }
+    }
+
+    @FXML
+    private void modifyWordCount() {
+        if (wordCountCheckBox.isSelected()) {
+            specificWordCount = true;
+            wordCountSlider.setDisable(false);
+        } else {
+            specificWordCount = false;
+            wordCountSlider.setDisable(true);
         }
     }
 

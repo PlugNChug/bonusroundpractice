@@ -10,7 +10,7 @@ public class BonusGameBackend {
     public static final List<Character> rstlne = new ArrayList<>(Arrays.asList('R', 'S', 'T', 'L', 'N', 'E'));
     public List<Character> vowelList = new ArrayList<>(Arrays.asList('A', 'E', 'I', 'O', 'U'));
     public List<Character> chosenLetters = new ArrayList<>();
-    public int limit;
+    public int consonantLimit;
 
     // private static final int FIRST_ROW = 0;
     private static final int SECOND_ROW = 12;
@@ -22,8 +22,16 @@ public class BonusGameBackend {
 
     private Animators animation;
 
-    public BonusGameBackend(boolean enableWildCard) {
-        limit = enableWildCard ? 4 : 3;
+    public BonusGameBackend(boolean noRSTLNE, boolean enableWildCard) {
+        if (noRSTLNE && enableWildCard) {
+            consonantLimit = 6;
+        } else if (noRSTLNE && !enableWildCard) {
+            consonantLimit = 5;
+        } else if (!noRSTLNE && enableWildCard) {
+            consonantLimit = 4;
+        } else {
+            consonantLimit = 3;
+        }
     }
 
     public void linkAnimation(Animators anim) {
@@ -40,6 +48,7 @@ public class BonusGameBackend {
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
         String s;
+        answers.clear();
         while ((s = reader.readLine()) != null) {
             answers.add(s);
         }
@@ -52,12 +61,18 @@ public class BonusGameBackend {
         return new Pair<String,String>(answers.get(index).split(",")[0], answers.get(index).split(",")[1]);
     }
 
+    /**
+     * Checks the answers.csv file generated using the "Get Bonus Puzzles from the Web" button, shuffles the rows, and picks the first row
+     * that has an answer with the given word count
+     * @return A random answer and category as a pair
+     * @throws IOException
+     */
     public Pair<String, String> snipeWordCount(int wordCount) throws IOException {
-
         File file = new File("answers.csv");
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
         String s;
+        answers.clear();
         while ((s = reader.readLine()) != null) {
             if (!s.isEmpty() && Arrays.asList(s.split(",")[0].split(" ")).size() == wordCount) {
                 answers.add(s);

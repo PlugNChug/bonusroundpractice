@@ -20,12 +20,14 @@ public class Sounds {
         }
     }
 
-    // Method overload
+    // Method overloads
     public void play(float volume) {
-        play(volume, false);
+        play(volume, false, 0);
     }
-
     public void play(float volume, boolean loop) {
+        play(volume, loop, 0);
+    }
+    public void play(float volume, boolean loop, int loopStart) {
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -40,6 +42,7 @@ public class Sounds {
                     // If loop=true is passed in, loop indefinitely
                     if (loop) {
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
+                        clip.setLoopPoints(loopStart, clip.getFrameLength() - 1);
                     }
 
                     clip.setFramePosition(0);

@@ -17,7 +17,8 @@ public class Animators {
     private static List<Integer> whiteSpacePositions = new ArrayList<>();
 
     private List<String> words;
-    private boolean enableRSTLNE;
+    private boolean noRSTLNE;
+    private boolean fastMode;
 
     private HBox consonants;
     private HBox vowels;
@@ -29,9 +30,10 @@ public class Animators {
     private Button stopRoundButton;
     private Button beginPuzzleButton;
 
-    public Animators(List<String> w, boolean b) {
+    public Animators(List<String> w, boolean n, boolean f) {
         this.words = w;
-        this.enableRSTLNE = b;
+        this.noRSTLNE = n;
+        this.fastMode = f;
     }
 
     public void linkConsonants(HBox c) {
@@ -73,9 +75,16 @@ public class Animators {
                     stop();
                 }
                 try {
+                    int delay;
+                    if (fastMode) {
+                        delay = 20;
+                    } else {
+                        delay = 60;
+                    }
+
                     // Note this only deals with one row: the row given in the parameters.
                     // This is why we call this method twice when an answer needs two rows
-                    if (now > startTime + TimeUnit.MILLISECONDS.toNanos(60)) {
+                    if (now > startTime + TimeUnit.MILLISECONDS.toNanos(delay)) {
                         // Display any special characters automatically...
                         if (!Character.isLetter(words.toCharArray()[position]) && words.toCharArray()[position] != ' ') {
                             spaces.get(row + startPos + position).setVisible(true);
@@ -125,12 +134,22 @@ public class Animators {
                 try {
                     long elapsedTime = now - startTime;
                     if (!showAnswerMode) {
-                        // 2.25 second delay until list initialization, or skip straight to letter choosing if enableRSTLNE is false
-                        if (!initialized && elapsedTime >= TimeUnit.MILLISECONDS.toNanos(2250)) {
+                        long initializeDelay;
+                        long firstLetterDelay;
+                        if (fastMode) {
+                            initializeDelay = 500;
+                            firstLetterDelay = 750;
+                        } else {
+                            initializeDelay = 2000;
+                            firstLetterDelay = 2500;
+                        }
+
+                        // Delay list initialization, or skip straight to letter choosing if noRSTLNE is false
+                        if (!initialized && elapsedTime >= TimeUnit.MILLISECONDS.toNanos(initializeDelay)) {
                             initializeLetterAssignments(words);
                             initialized = true;
                             // Only skip if this is called in the RSTLNE phase
-                            if (!enableRSTLNE && context == 0) {
+                            if (noRSTLNE && context == 0) {
                                 System.out.println("RSTLNE disabled!");
                                 chooseLettersTransition();
                                 stop();
@@ -138,22 +157,29 @@ public class Animators {
                         }
 
                         // 2.5 second delay until letter reveals
-                        if (initialized && (revealStarted || elapsedTime >= TimeUnit.MILLISECONDS.toNanos(2500))) {
+                        if (initialized && (revealStarted || elapsedTime >= TimeUnit.MILLISECONDS.toNanos(firstLetterDelay))) {
                             revealStarted = true;
 
-                            // Reveal letters every 1.15 seconds
-                            if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(1150)) {
-                                startTime = now;
-                                boolean letterRevealed = revealNextLetter(letters);
-                                // Stop if no letters were revealed
-                                if (!letterRevealed) {
-                                    System.out.println("Done revealing letters!");
+                            if (fastMode) {
+                                allLettersAtOnce(letters);
+                                chooseLettersTransition();
+                                stop();
+                            } else {
+                                // Reveal letters every 1.15 seconds
+                                if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(1150)) {
+                                    startTime = now;
+                                    boolean letterRevealed = revealNextLetter(letters);
+                                    // Stop if no letters were revealed
+                                    if (!letterRevealed) {
+                                        System.out.println("Done revealing letters!");
 
-                                    // Transition to chooseletters
-                                    chooseLettersTransition();
-                                    stop();
+                                        // Transition to chooseletters
+                                        chooseLettersTransition();
+                                        stop();
+                                    }
                                 }
                             }
+                            
                         }
                     } else {
                         // 0.5 second delay until list initialization
@@ -187,7 +213,7 @@ public class Animators {
                 switch (context) {
                     case 0:
                         Game.rstlne.stop();
-                        Game.chooseLetters.play(0.6f, true);
+                        Game.chooseLetters.play(0.6f, true, 56494);
                         enableHBoxes();
                         break;
                     case 1:
@@ -202,7 +228,7 @@ public class Animators {
             // Enables the FXML letter buttons
             private void enableHBoxes() {
                 if (consonants != null) {
-                    if (Game.enableRSTLNE) {
+                    if (!Game.noRSTLNE) {
                         for (Node node : consonants.getChildren()) {
                             Button b = (Button) node;
                             if (BonusGameBackend.rstlne.contains(b.getText().toCharArray()[0])) {
@@ -213,7 +239,7 @@ public class Animators {
                     consonants.setDisable(false);
                 }
                 if (vowels != null) {
-                    if (Game.enableRSTLNE) {
+                    if (!Game.noRSTLNE) {
                         for (Node node : vowels.getChildren()) {
                             Button b = (Button) node;
                             if (b.getText().compareTo("E") == 0) {
@@ -255,7 +281,7 @@ public class Animators {
                             if (assignment.getValue() == space && letters.contains(assignment.getKey())) {
                                 Label label = (Label) spaces.get(space);
                                 if (label.getStyle().compareTo("-fx-background-color: white; -fx-background-radius: 1;") == 0 && label.getText().isEmpty()) {
-                                    blueScreen(label, assignment.getKey().toString());
+                                    blueScreen(label, assignment.getKey().toString(), fastMode);
                                     playSound();
                                     return true;
                                 }
@@ -283,6 +309,31 @@ public class Animators {
                 return false;
             }
 
+            private void allLettersAtOnce(List<Character> letters) {
+                boolean notPlayed = true;
+                for (int space : revealOrder) {
+                    // Skip unactivated tiles
+                    if (!spaces.get(space).isVisible()) {
+                        continue;
+                    }
+
+                    for (Pair<Character, Integer> assignment : letterAssignments) {
+                        if (assignment.getValue() == space && letters.contains(assignment.getKey())) {
+                            Label label = (Label) spaces.get(space);
+                            if (label.getStyle().compareTo("-fx-background-color: white; -fx-background-radius: 1;") == 0 && label.getText().isEmpty()) {
+                                // Play ding sound only once
+                                if (notPlayed) {
+                                    notPlayed = false;
+                                    playSound();
+                                }
+
+                                blueScreen(label, assignment.getKey().toString(), fastMode);
+                            }
+                        }
+                    }
+                }
+            }
+
             // Alternate between the two ding sounds since I encountered lag here when trying to
             private void playSound() {
                 if (Game.dingSound1.isPlaying()) {
@@ -294,7 +345,7 @@ public class Animators {
         }.start();
     }
 
-    private void blueScreen(Label label, String letter) {
+    private void blueScreen(Label label, String letter, boolean fastMode) {
         new AnimationTimer() {
             long startTime = 0;
             Random random = new Random();
@@ -309,8 +360,15 @@ public class Animators {
                 }
 
                 long elapsedTime = now - startTime;
-                // After the blue screen, the letter will take between 2.2s and 3.2s to be revealed
-                if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(2700 + random.nextInt(-500, 500))) {
+                long duration;
+
+                if (fastMode) {
+                    duration = 1000;
+                } else {
+                    duration = 2700 + random.nextInt(-500, 500);
+                }
+                // After the blue screen, the letter will take a random duration to be revealed
+                if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(duration)) {
                     label.setStyle("-fx-background-color: white; -fx-background-radius: 1;");
                     label.setText(letter);
                     stop();
@@ -339,8 +397,11 @@ public class Animators {
                     readyText.setVisible(false);
                     guessTimer();
                     stop();
-                } else if (elapsedTime >= TimeUnit.SECONDS.toNanos(2)) {
+                } 
+                // Enable and focus on the text field one second before the countdown
+                else if (elapsedTime >= TimeUnit.SECONDS.toNanos(2)) {
                     answerField.setDisable(false);
+                    answerField.requestFocus();
                     enterAnswerButton.setDisable(false);
                 }
             }
@@ -355,7 +416,7 @@ public class Animators {
             public void handle(long now) {
                 if (startTime == 0) {
                     Game.chooseLetters.stop();
-                    Game.bonusClock.play(0.7f);
+                    Game.bonusClock.play(0.4f);
                     startTime = now;
                 }
                 countdownText.setVisible(true);
