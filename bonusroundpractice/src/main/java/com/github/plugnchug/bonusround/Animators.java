@@ -20,6 +20,7 @@ public class Animators {
     private boolean noRSTLNE;
     private boolean fastMode;
 
+    private HBox rstlneDisplay;
     private HBox consonants;
     private HBox vowels;
     private VBox settings;
@@ -37,6 +38,9 @@ public class Animators {
         this.fastMode = f;
     }
 
+    public void linkRSTLNEDisplay(HBox d) {
+        this.rstlneDisplay = d;
+    }
     public void linkConsonants(HBox c) {
         this.consonants = c;
     }
@@ -152,11 +156,16 @@ public class Animators {
                         if (!initialized && elapsedTime >= TimeUnit.MILLISECONDS.toNanos(initializeDelay)) {
                             initializeLetterAssignments(words);
                             initialized = true;
-                            // Only skip if this is called in the RSTLNE phase
+
+                            // Only do these blocks if called in the RSTLNE phase (context == 0)
                             if (noRSTLNE && context == 0) {
+                                // Skip RSTLNE if the corresponding option is enabled
                                 System.out.println("RSTLNE disabled!");
                                 chooseLettersTransition();
                                 stop();
+                            } else if (context == 0) {
+                                // Otherwise show the RSTLNE letters on their display in the bottom left
+                                fillRSTLNEDisplay();
                             }
                         }
 
@@ -402,9 +411,53 @@ public class Animators {
         }.start();
     }
 
+    private void fillRSTLNEDisplay() {
+        new AnimationTimer() {
+            long startTime = 0;
+            int counter = 0;
+
+            @Override
+            public void handle(long now) {
+                if (requestedStop) {
+                    stop();
+                }
+
+                if (startTime == 0) {
+                    startTime = now;
+                }
+
+                long elapsedTime = now - startTime;
+                // Reveal RSTLNE every 0.4 seconds
+                if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(400)) {
+                    if (traverseLabels()) {
+                        stop();
+                    }
+                    startTime = now;
+                }
+            }
+
+            private boolean traverseLabels() {
+                for(Node label : rstlneDisplay.getChildren()) {
+                    Label l = (Label) label;
+                    if (((Label) label).getText().isEmpty()) {
+                        if (counter > 5) {
+                            stop();
+                        }
+                        l.setText(BonusGameBackend.rstlne.get(counter).toString());
+                        counter++;
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }.start();
+    }
+
     private void guessTransitionTimer() {
         new AnimationTimer() {
             long startTime = 0;
+
             @Override
             public void handle(long now) {
                 readyText.setVisible(true);
@@ -452,7 +505,7 @@ public class Animators {
                 // Initial stuff
                 if (startTime == 0) {
                     Game.chooseLetters.stop();
-                    Game.bonusClock.play(0.4f);
+                    Game.bonusClock.play(0.3f);
                     countdownText.setVisible(true);
                     startTime = now;
                 }
@@ -481,6 +534,7 @@ public class Animators {
         new AnimationTimer() {
             long startTime = 0;
             List<Character> allLetters = new ArrayList<>();
+
             @Override
             public void handle(long now) {
                 if (requestedStop && !solved) {

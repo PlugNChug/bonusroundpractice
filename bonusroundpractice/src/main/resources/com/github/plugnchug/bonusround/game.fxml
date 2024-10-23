@@ -294,9 +294,9 @@
             <Font name="Calibri Bold" size="18.0" />
          </font>
       </Button>
-      <Label fx:id="categoryDisplay" alignment="CENTER" layoutX="439.0" layoutY="400.0" prefWidth="400.0" text="NO PUZZLE LOADED!" textAlignment="CENTER">
+      <Label fx:id="categoryDisplay" alignment="CENTER" layoutX="439.0" layoutY="404.0" prefWidth="400.0" style="-fx-border-color: navy; -fx-border-radius: 40; -fx-border-width: 5;" text="No Puzzle Loaded" textAlignment="CENTER">
          <font>
-            <Font name="Helvetica Neue Condensed Bold" size="36.0" />
+            <Font name="Helvetica Neue Condensed Bold" size="30.0" />
          </font>
       </Label>
       <Button fx:id="stopRoundButton" disable="true" layoutX="525.0" layoutY="645.0" onAction="#requestStop" prefHeight="46.0" prefWidth="114.0" stylesheets="@styles.css" text="Stop Round" textAlignment="CENTER" wrapText="true">
@@ -479,7 +479,7 @@
             <Insets />
          </opaqueInsets>
       </HBox>
-      <HBox fx:id="vowels" alignment="CENTER" disable="true" layoutX="10.0" layoutY="530.0" prefHeight="53.0" prefWidth="1260.0">
+      <HBox fx:id="vowels" alignment="CENTER" disable="true" layoutX="9.0" layoutY="526.0" prefHeight="53.0" prefWidth="1260.0">
          <children>
             <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="A" textAlignment="CENTER" textOverrun="CLIP">
                <HBox.margin>
@@ -661,5 +661,57 @@
             </Label>
          </children>
       </Pane>
+      <HBox fx:id="rstlneDisplay" alignment="CENTER_RIGHT" layoutX="9.0" layoutY="400.0" prefHeight="50.0" prefWidth="258.0">
+         <children>
+            <Label alignment="CENTER" prefWidth="30.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label alignment="CENTER" prefWidth="30.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label alignment="CENTER" prefWidth="30.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label alignment="CENTER" prefWidth="30.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label alignment="CENTER" prefWidth="30.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label alignment="CENTER" prefWidth="30.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

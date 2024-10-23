@@ -74,6 +74,8 @@ public class Game {
     @FXML 
     private HBox vowels;
     @FXML
+    private HBox rstlneDisplay;
+    @FXML
     private HBox chosenLetterDisplay;
     @FXML
     private VBox settings;
@@ -135,15 +137,8 @@ public class Game {
 
         // Link the board's tiles to the Animators class
         Animators.spaces = board.getChildren();
-        // Reset all board spaces to be invisible
-        for (Node space : Animators.spaces) {
-            space.setVisible(false);
-            ((Label) space).setStyle("-fx-background-color: white; -fx-background-radius: 1;");
-            ((Label) space).setText("");
-        }
-        for (Node label : chosenLetterDisplay.getChildren()) {
-            ((Label) label).setText("");
-        }
+        // Reset labels to be invisible/cleared
+        clearLabels();
         
         // Get answer length
         int answerLen = puzzle.getKey().length();
@@ -164,26 +159,15 @@ public class Game {
         // Request to stop all animations (each animation method will check for the static variable Animators.requestedStop)
         Animators.requestedStop = true;
         // Clear board
-        Animators.spaces = board.getChildren();
 
-        // Reset all board spaces and other labels to be empty/invisible
-        for (Node space : Animators.spaces) {
-            space.setVisible(false);
-            ((Label) space).setText("");
-            ((Label) space).setStyle("-fx-background-color: white; -fx-background-radius: 1;");
-        }
-        for (Node label : chosenLetterDisplay.getChildren()) {
-            ((Label) label).setText("");
-        }
+        
+        // Reset labels to be invisible/cleared
+        clearLabels();
 
-        // Disable buttons and text field, enable settings and begin puzzle button
-        consonants.setDisable(true);
-        vowels.setDisable(true);
-        stopRoundButton.setDisable(true);
-        enterAnswerButton.setDisable(true);
-        answerField.setDisable(true);
-        settings.setDisable(false);
-        beginPuzzleButton.setDisable(false);
+        // Set element states accordingly
+        stopButtonStates();
+        categoryDisplay.setText("No Puzzle Loaded");
+        outcomePane.setVisible(false);
 
         // Reset answer field if filled
         answerField.setText("");
@@ -295,6 +279,7 @@ public class Game {
         animation.linkBeginPuzzleButton(beginPuzzleButton);
         animation.linkSettings(settings);
         animation.linkOutcomePane(outcomePane);
+        animation.linkRSTLNEDisplay(rstlneDisplay);
     }
 
     private void setOutcome(boolean gameWon) {
@@ -332,6 +317,20 @@ public class Game {
         answerField.setDisable(true);
         settings.setDisable(false);
         beginPuzzleButton.setDisable(false);
+    }
+
+    private void clearLabels() {
+        for (Node space : Animators.spaces) {
+            space.setVisible(false);
+            ((Label) space).setStyle("-fx-background-color: white; -fx-background-radius: 1;");
+            ((Label) space).setText("");
+        }
+        for (Node label : rstlneDisplay.getChildren()) {
+            ((Label) label).setText("");
+        }
+        for (Node label : chosenLetterDisplay.getChildren()) {
+            ((Label) label).setText("");
+        }
     }
 
     public void enableLetters() {
