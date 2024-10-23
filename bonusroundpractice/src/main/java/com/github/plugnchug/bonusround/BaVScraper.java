@@ -1,4 +1,4 @@
-package com.github.plugnchug.bonusround.scraper;
+package com.github.plugnchug.bonusround;
 
 import java.io.*;
 

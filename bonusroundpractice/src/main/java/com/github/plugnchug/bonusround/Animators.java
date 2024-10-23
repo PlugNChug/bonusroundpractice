@@ -29,6 +29,7 @@ public class Animators {
     private TextField answerField;
     private Button stopRoundButton;
     private Button beginPuzzleButton;
+    private Pane outcomePane;
 
     public Animators(List<String> w, boolean n, boolean f) {
         this.words = w;
@@ -62,6 +63,9 @@ public class Animators {
     }
     public void linkBeginPuzzleButton(Button b) {
         this.beginPuzzleButton = b;
+    }
+    public void linkOutcomePane(Pane o) {
+        this.outcomePane = o;
     }
 
     public void animateReveal(String words, int row, int startPos) {
@@ -123,7 +127,7 @@ public class Animators {
 
             @Override
             public void handle(long now) {
-                if (requestedStop) {
+                if (requestedStop && context != 3) {
                     stop();
                 }
 
@@ -181,14 +185,35 @@ public class Animators {
                             }
                             
                         }
-                    } else {
-                        // 0.5 second delay until list initialization
+                    } 
+                    // If the player doesn't solve the puzzle:
+                    else if (context == 2) {
+                        // 0.1 second delay until list initialization
                         if (!initialized && elapsedTime >= TimeUnit.MILLISECONDS.toNanos(100)) {
                             initializeLetterAssignments(words);
                             initialized = true;
                         }
                         // Reveal letters every 0.3 seconds
                         if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(300)) {
+                            startTime = now;
+                            boolean letterRevealed = revealNextLetter(letters);
+
+                            // Stop if no letters were revealed
+                            if (!letterRevealed) {
+                                System.out.println("Answer revealed!");
+                                stopRoundButton.setDisable(true);
+                                beginPuzzleButton.setDisable(false);
+                                settings.setDisable(false);
+                                stop();
+                            }
+                        }
+                    }
+                    // If the palyer does solve the puzzle
+                    else {
+                        initializeLetterAssignments(words);
+                        initialized = true;
+                        // Reveal letters every 0.06 seconds
+                        if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(60)) {
                             startTime = now;
                             boolean letterRevealed = revealNextLetter(letters);
 
@@ -412,14 +437,26 @@ public class Animators {
         new AnimationTimer() {
             long startTime = 0;
             Integer counter = 10;
+
+            // Automatic countdown timer starts
             @Override
             public void handle(long now) {
+                if (requestedStop) {
+                    answerField.setText("");
+                    answerField.setDisable(true);
+                    enterAnswerButton.setDisable(true);
+                    countdownText.setVisible(false);
+                    Game.bonusClock.stop();
+                    stop();
+                }
+                // Initial stuff
                 if (startTime == 0) {
                     Game.chooseLetters.stop();
                     Game.bonusClock.play(0.4f);
+                    countdownText.setVisible(true);
                     startTime = now;
                 }
-                countdownText.setVisible(true);
+                
                 if (counter > 0) {
                     countdownText.setText(counter.toString());
                     long elapsedTime = now - startTime;
@@ -428,39 +465,49 @@ public class Animators {
                         startTime = now;
                     }
                 } else {
+                    outcomePane.setVisible(true);
                     Game.doubleBuzzer.play(1);
                     answerField.setText("");
                     answerField.setDisable(true);
                     enterAnswerButton.setDisable(true);
-                    revealAnswerTimer();
+                    revealAnswerTimer(false);
                     stop();
                 }
             }
         }.start();
     }
 
-    private void revealAnswerTimer() {
+    public void revealAnswerTimer(boolean solved) {
         new AnimationTimer() {
             long startTime = 0;
+            List<Character> allLetters = new ArrayList<>();
             @Override
             public void handle(long now) {
-                if (requestedStop) {
+                if (requestedStop && !solved) {
                     stop();
                 }
 
                 if (startTime == 0) {
                     countdownText.setVisible(false);
-                    startTime = now;
-                }
-
-                long elapsedTime = now - startTime;
-                // Reveal answer after 1.5 seconds
-                if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(1500)) {
-                    List<Character> allLetters = new ArrayList<>();
                     for (int i = 65; i <= 90; i++) {
                         allLetters.add((char) i);
                     }
-                    animateLetters(allLetters, 2, true);
+                    startTime = now;
+                }
+
+                
+                // Case where player fails to solve the puzzle when the countdown expires
+                if (!solved) {
+                    long elapsedTime = now - startTime;
+                    // Slowly reveal answer 1.5 seconds after countdown expires
+                    if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(1500)) {
+                        animateLetters(allLetters, 2, true);
+                        stop();
+                    }
+                } 
+                // Case where player solves the puzzle and the answer needs to be show immediately
+                else {
+                    animateLetters(allLetters, 3, true);
                     stop();
                 }
             }

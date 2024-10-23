@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.*;
 import javax.sound.sampled.*;
 
-import com.github.plugnchug.bonusround.scraper.BaVScraper;
-
 import javafx.animation.AnimationTimer;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -26,6 +24,7 @@ public class Game {
     public static Sounds rstlne = new Sounds("resources/rstlne.wav");
     public static Sounds chooseLetters = new Sounds("resources/chooseLetters2.wav");
     public static Sounds bonusClock = new Sounds("resources/bonusClock.wav");
+    public static Sounds win = new Sounds("resources/win.wav");
 
     // Game settings
     public static boolean noRSTLNE = false;
@@ -67,6 +66,8 @@ public class Game {
     Slider wordCountSlider;
     @FXML
     TextField answerField;
+    @FXML
+    Pane outcomePane;
 
     @FXML
     private HBox consonants;
@@ -98,17 +99,14 @@ public class Game {
             n.setDisable(false);
         }
 
-        // Set button states
-        consonants.setDisable(true);
-        vowels.setDisable(true);
-        settings.setDisable(true);
-        enterAnswerButton.setDisable(true);
-        answerField.setDisable(true);
+        // If the win fanfare bleeds over (because the player clicked the button to begin a new round quick enough after a solve), stop it
+        win.stop();
 
-        // Prevent button spamming that could glitch out the puzzle board
-        beginPuzzleButton.setDisable(true);
-        stopRoundButton.setDisable(true);
-        enableButtonTimer(stopRoundButton);
+        startButtonStates();
+
+        // Reset outcome display
+        outcomePane.setVisible(false);
+        setOutcome(false);
 
         // Reset some values
         Animators.requestedStop = false;
@@ -167,12 +165,17 @@ public class Game {
         Animators.requestedStop = true;
         // Clear board
         Animators.spaces = board.getChildren();
-        // Reset all board spaces to be invisible
+
+        // Reset all board spaces and other labels to be empty/invisible
         for (Node space : Animators.spaces) {
             space.setVisible(false);
             ((Label) space).setText("");
             ((Label) space).setStyle("-fx-background-color: white; -fx-background-radius: 1;");
         }
+        for (Node label : chosenLetterDisplay.getChildren()) {
+            ((Label) label).setText("");
+        }
+
         // Disable buttons and text field, enable settings and begin puzzle button
         consonants.setDisable(true);
         vowels.setDisable(true);
@@ -232,6 +235,13 @@ public class Game {
     @FXML
     private void enterAnswer() {
         if (answerField.getText().compareTo(puzzle.getKey()) == 0) {
+            setOutcome(true);
+            outcomePane.setVisible(true);
+            Animators.requestedStop = true;
+            stopButtonStates();
+            win.play(0.4f);
+            chooseLetters.stop();
+            animation.revealAnswerTimer(true);
             System.out.println("Solved!");
         }
     }
@@ -284,6 +294,44 @@ public class Game {
         animation.linkStopRoundButton(stopRoundButton);
         animation.linkBeginPuzzleButton(beginPuzzleButton);
         animation.linkSettings(settings);
+        animation.linkOutcomePane(outcomePane);
+    }
+
+    private void setOutcome(boolean gameWon) {
+        if (gameWon) {
+            Label l = (Label) outcomePane.getChildren().get(outcomePane.getChildren().size() - 1);
+            l.setStyle("-fx-background-color: transparent; -fx-text-fill: #222222; -fx-border-color: #222222; -fx-border-width: 4;");
+            l.setText("YOU WIN!");
+        } else {
+            Label l = (Label) outcomePane.getChildren().get(outcomePane.getChildren().size() - 1);
+            l.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-border-color: #2a905c; -fx-border-width: 4;");
+            l.setText("TIME'S UP!");
+        }
+    }
+
+    public void startButtonStates() {
+        // Set button states
+        consonants.setDisable(true);
+        vowels.setDisable(true);
+        settings.setDisable(true);
+        enterAnswerButton.setDisable(true);
+        answerField.setDisable(true);
+
+        // Prevent button spamming that could glitch out the puzzle board
+        beginPuzzleButton.setDisable(true);
+        stopRoundButton.setDisable(true);
+        enableButtonTimer(stopRoundButton);
+    }
+
+    private void stopButtonStates() {
+        // Set button states
+        consonants.setDisable(true);
+        vowels.setDisable(true);
+        stopRoundButton.setDisable(true);
+        enterAnswerButton.setDisable(true);
+        answerField.setDisable(true);
+        settings.setDisable(false);
+        beginPuzzleButton.setDisable(false);
     }
 
     public void enableLetters() {
