@@ -1,6 +1,5 @@
 package com.github.plugnchug.bonusround;
 
-import java.io.*;
 import java.net.*;
 
 import javax.sound.sampled.*;
@@ -14,7 +13,7 @@ public class Sounds {
     public Sounds(String fileName) {
         try {
             clip = AudioSystem.getClip();
-            url = new File(fileName).toURI().toURL();
+            url = getClass().getResource(fileName);
         } catch (Exception e) {
             e.printStackTrace();
         }

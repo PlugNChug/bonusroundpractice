@@ -18,18 +18,18 @@ import javafx.util.Pair;
 
 public class Game {
     // Sound effects
-    public static Sounds puzzleRevealSound = new Sounds("resources/puzzleReveal.wav");
-    public static Sounds dingSound1 = new Sounds("resources/ding.wav");
-    public static Sounds dingSound2 = new Sounds("resources/ding.wav");
-    public static Sounds buzzer = new Sounds("resources/buzzer.wav");
-    public static Sounds doubleBuzzer = new Sounds("resources/doubleBuzzer.wav");
+    public static Sounds puzzleRevealSound = new Sounds("sounds/puzzleReveal.wav");
+    public static Sounds dingSound1 = new Sounds("sounds/ding.wav");
+    public static Sounds dingSound2 = new Sounds("sounds/ding.wav");
+    public static Sounds buzzer = new Sounds("sounds/buzzer.wav");
+    public static Sounds doubleBuzzer = new Sounds("sounds/doubleBuzzer.wav");
 
     // Music cues
-    public static Sounds rstlne = new Sounds("resources/rstlne.wav");
-    public static Sounds chooseLetters = new Sounds("resources/chooseLetters2.wav");
-    public static Sounds bonusClock = new Sounds("resources/bonusClock.wav");
-    public static Sounds win = new Sounds("resources/win.wav");
-    public static Sounds speedUp = new Sounds("resources/speedUp.wav");
+    public static Sounds rstlne = new Sounds("sounds/rstlne.wav");
+    public static Sounds chooseLetters = new Sounds("sounds/chooseLetters2.wav");
+    public static Sounds bonusClock = new Sounds("sounds/bonusClock.wav");
+    public static Sounds win = new Sounds("sounds/win.wav");
+    public static Sounds speedUp = new Sounds("sounds/speedUp.wav");
 
     // Game settings
     public static boolean noRSTLNE = false;

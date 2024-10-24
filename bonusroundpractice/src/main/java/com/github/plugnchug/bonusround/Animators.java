@@ -226,8 +226,10 @@ public class Animators {
                     }
                     // If the player does solve the puzzle
                     else {
-                        initializeLetterAssignments(words);
-                        initialized = true;
+                        if (!initialized) {
+                            initializeLetterAssignments(words);
+                            initialized = true;
+                        }
                         // Reveal letters every 0.06 seconds
                         if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(60)) {
                             startTime = now;
@@ -308,7 +310,7 @@ public class Animators {
                 int counter = 0;
                 for (String word : words) {
                     for (char letter : word.toCharArray()) {
-                        if (!requestedStop) {
+                        if (Game.endlessKeepGoing) {
                             letterAssignments.add(new Pair<>(letter, whiteSpacePositions.get(counter)));
                             counter++;
                         }
