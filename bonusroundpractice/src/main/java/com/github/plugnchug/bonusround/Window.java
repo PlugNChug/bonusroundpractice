@@ -21,6 +21,8 @@ public class Window extends Application {
 
         scene = new Scene(loadFXML("game"));
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Bonus Round Practice");
         stage.show();
     }
 

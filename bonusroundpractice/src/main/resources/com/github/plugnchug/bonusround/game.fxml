@@ -14,282 +14,293 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.plugnchug.bonusround.Game">
    <children>
-      <ImageView fitHeight="342.0" fitWidth="861.0" layoutX="209.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Grid2.png" />
-         </image>
-      </ImageView>
-      <Pane fx:id="board" layoutX="209.0" layoutY="58.0" prefHeight="342.0" prefWidth="861.0">
+      <Pane layoutX="209.0" layoutY="58.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="780.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="780.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
-               <font>
-                  <Font name="Helvetica Neue Condensed Bold" size="40.0" />
-               </font>
-            </Label>
+            <ImageView fitHeight="342.0" fitWidth="861.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Grid2.png" />
+               </image>
+            </ImageView>
+            <Pane fx:id="board" prefHeight="342.0" prefWidth="861.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="40.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="780.0" layoutY="110.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="780.0" layoutY="180.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="154.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="268.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="382.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="439.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="610.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="667.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="724.0" layoutY="250.0" prefHeight="53.0" prefWidth="40.0" style="-fx-background-color: white; -fx-background-radius: 1;" textAlignment="CENTER" textOverrun="CLIP" visible="false">
+                     <font>
+                        <Font name="Helvetica Neue Condensed Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Button layoutX="40.0" layoutY="645.0" onAction="#webScrape" prefHeight="46.0" prefWidth="114.0" stylesheets="@styles.css" text="Get Bonus Puzzles from the Web" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri Bold" size="12.0" />
-         </font></Button>
+         </font>
+      </Button>
       <Button fx:id="beginPuzzleButton" layoutX="394.0" layoutY="645.0" onAction="#beginPuzzle" prefHeight="46.0" prefWidth="122.0" stylesheets="@styles.css" text="Begin Puzzle" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="stopRoundButton" disable="true" layoutX="525.0" layoutY="645.0" onAction="#requestStop" prefHeight="46.0" prefWidth="114.0" stylesheets="@styles.css" text="Stop Round" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Calibri Bold" size="18.0" />
          </font>
@@ -299,11 +310,6 @@
             <Font name="Helvetica Neue Condensed Bold" size="30.0" />
          </font>
       </Label>
-      <Button fx:id="stopRoundButton" disable="true" layoutX="525.0" layoutY="645.0" onAction="#requestStop" prefHeight="46.0" prefWidth="114.0" stylesheets="@styles.css" text="Stop Round" textAlignment="CENTER" wrapText="true">
-         <font>
-            <Font name="Calibri Bold" size="18.0" />
-         </font>
-      </Button>
       <HBox fx:id="consonants" alignment="CENTER" disable="true" layoutX="9.0" layoutY="461.0" prefHeight="53.0" prefWidth="1260.0">
          <children>
             <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#letterButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@styles.css" text="B" textAlignment="CENTER" textOverrun="CLIP">
@@ -671,40 +677,6 @@
             </Label>
          </children>
       </HBox>
-      <TextField fx:id="answerField" alignment="CENTER" disable="true" layoutX="394.0" layoutY="591.0" onAction="#enterAnswer" onKeyTyped="#formatAnswer" prefHeight="35.0" prefWidth="489.0" stylesheets="@styles.css">
-         <font>
-            <Font name="Calibri" size="18.0" />
-         </font>
-      </TextField>
-      <Button fx:id="enterAnswerButton" disable="true" layoutX="735.0" layoutY="645.0" onAction="#enterAnswer" prefHeight="46.0" prefWidth="148.0" stylesheets="@styles.css" text="Enter Answer" textAlignment="CENTER" wrapText="true">
-         <font>
-            <Font name="Calibri Bold" size="18.0" />
-         </font>
-      </Button>
-      <Label fx:id="countdown" alignment="CENTER" layoutX="1103.0" layoutY="188.0" prefHeight="82.0" prefWidth="80.0" textAlignment="CENTER">
-         <font>
-            <Font name="Calibri Bold" size="72.0" />
-         </font>
-      </Label>
-      <Label fx:id="readyText" alignment="CENTER" layoutX="1093.0" layoutY="218.0" prefHeight="22.0" prefWidth="100.0" text="Get ready..." textAlignment="CENTER" visible="false">
-         <font>
-            <Font name="Calibri Bold" size="18.0" />
-         </font>
-      </Label>
-      <Pane fx:id="outcomePane" layoutX="908.0" layoutY="559.0" prefHeight="100.0" prefWidth="350.0" visible="false">
-         <children>
-            <ImageView fitHeight="98.0" fitWidth="348.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true">
-               <image>
-                  <Image url="@glitter.jpg" />
-               </image>
-            </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="1.0" prefHeight="100.0" prefWidth="350.0" style="-fx-border-color: #222222; -fx-border-width: 4; -fx-text-fill: #222222;" text="OUTCOME" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="Constantia Bold" size="54.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <HBox fx:id="rstlneDisplay" alignment="CENTER_RIGHT" layoutX="9.0" layoutY="400.0" prefHeight="50.0" prefWidth="258.0">
          <children>
             <Label alignment="CENTER" prefWidth="30.0" textAlignment="CENTER">
@@ -757,5 +729,43 @@
             </Label>
          </children>
       </HBox>
+      <TextField fx:id="answerField" alignment="CENTER" disable="true" layoutX="394.0" layoutY="591.0" onAction="#enterAnswer" onKeyTyped="#formatAnswer" prefHeight="35.0" prefWidth="489.0" stylesheets="@styles.css">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <Button fx:id="enterAnswerButton" disable="true" layoutX="735.0" layoutY="645.0" onAction="#enterAnswer" prefHeight="46.0" prefWidth="148.0" stylesheets="@styles.css" text="Enter Answer" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Button>
+      <Pane layoutX="1093.0" layoutY="188.0">
+         <children>
+            <Label fx:id="countdown" alignment="CENTER" layoutX="10.0" prefHeight="82.0" prefWidth="80.0" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="72.0" />
+               </font>
+            </Label>
+            <Label fx:id="readyText" alignment="CENTER" layoutY="30.0" prefHeight="22.0" prefWidth="100.0" text="Get ready..." textAlignment="CENTER" visible="false">
+               <font>
+                  <Font name="Calibri Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="outcomePane" layoutX="908.0" layoutY="559.0" prefHeight="100.0" prefWidth="350.0" visible="false">
+         <children>
+            <ImageView fitHeight="98.0" fitWidth="348.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true">
+               <image>
+                  <Image url="@glitter.jpg" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="1.0" prefHeight="100.0" prefWidth="350.0" style="-fx-border-color: #222222; -fx-border-width: 4; -fx-text-fill: #222222;" text="OUTCOME" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Constantia Bold" size="54.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

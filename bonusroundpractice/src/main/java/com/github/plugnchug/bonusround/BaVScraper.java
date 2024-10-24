@@ -9,8 +9,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javafx.util.Pair;
-
 public class BaVScraper {
     private static final int MAX_THREADS = (int) (Runtime.getRuntime().availableProcessors() / 2);
 
