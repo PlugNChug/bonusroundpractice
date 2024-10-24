@@ -2,6 +2,8 @@ package com.github.plugnchug.bonusround;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 import javax.sound.sampled.*;
 
 import javafx.animation.AnimationTimer;
@@ -10,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Pair;
 
 public class Game {
@@ -25,12 +29,15 @@ public class Game {
     public static Sounds chooseLetters = new Sounds("resources/chooseLetters2.wav");
     public static Sounds bonusClock = new Sounds("resources/bonusClock.wav");
     public static Sounds win = new Sounds("resources/win.wav");
+    public static Sounds speedUp = new Sounds("resources/speedUp.wav");
 
     // Game settings
     public static boolean noRSTLNE = false;
     public static boolean enableWildCard = false;
     public static boolean fastMode = false;
     public static boolean specificWordCount = false;
+    public static boolean specificSeason = false;
+    public static boolean endlessMode = false;
 
     // Animation/behind the scenes helpers
     Animators animation;
@@ -38,6 +45,8 @@ public class Game {
     int consonantCounter = 0;
     Pair<String, String> puzzle;
     static List<String> words;
+    static int endlessStreak = 0;
+    static boolean endlessKeepGoing = true;
 
     // FXML inject variables
     @FXML
@@ -48,12 +57,22 @@ public class Game {
     Label countdown;
     @FXML
     Pane board;
+
+    // Game control/answering elements
     @FXML
     Button beginPuzzleButton;
     @FXML
     Button stopRoundButton;
     @FXML
     Button enterAnswerButton;
+    @FXML
+    TextField answerField;
+    @FXML
+    Pane outcomePane;
+
+    // Settings elements
+    @FXML
+    private VBox settings;
     @FXML
     CheckBox rstlneCheckBox;
     @FXML
@@ -65,10 +84,13 @@ public class Game {
     @FXML
     Slider wordCountSlider;
     @FXML
-    TextField answerField;
+    CheckBox seasonCheckBox;
     @FXML
-    Pane outcomePane;
+    TextField seasonTextField;
+    @FXML
+    CheckBox endlessModeCheckBox;
 
+    // Buttons/display elements
     @FXML
     private HBox consonants;
     @FXML 
@@ -77,8 +99,6 @@ public class Game {
     private HBox rstlneDisplay;
     @FXML
     private HBox chosenLetterDisplay;
-    @FXML
-    private VBox settings;
     
 
     @FXML
@@ -104,8 +124,6 @@ public class Game {
         // If the win fanfare bleeds over (because the player clicked the button to begin a new round quick enough after a solve), stop it
         win.stop();
 
-        startButtonStates();
-
         // Reset outcome display
         outcomePane.setVisible(false);
         setOutcome(false);
@@ -113,6 +131,7 @@ public class Game {
         // Reset some values
         Animators.requestedStop = false;
         consonantCounter = 0;
+        endlessKeepGoing = true;
 
         // Initialize the game's backend stuff
         bonusGameFunctionality = new BonusGameBackend(noRSTLNE, enableWildCard);
@@ -120,12 +139,37 @@ public class Game {
         // Get a random puzzle
         if (specificWordCount) {
             puzzle = bonusGameFunctionality.snipeWordCount((int) Math.round(wordCountSlider.getValue()));
+        } else if (specificSeason) {
+            int season = 0;
+            try {
+                season = Integer.parseInt(seasonTextField.getText());
+            } catch (NumberFormatException e) {
+                seasonTextField.setStyle("-fx-border-color: red;");
+                return;
+            }
+            puzzle = bonusGameFunctionality.snipeSeason(season);
         } else {
             puzzle = bonusGameFunctionality.getRandomAnswer();
         }
 
-        // Split the answer into the rows in a reasonable way
+        // Get answer length
+        int answerLen = puzzle.getKey().length();
+
+        // Split the answer into a list of the words it contains
         words = new ArrayList<>(Arrays.asList(puzzle.getKey().split(" ")));
+
+        // If there's only one word but it's longer than 14 characters,
+        // ex: "WINDOW-SHOPPING", only possible with a hyphen,
+        // split it into two words at the hyphen
+        if (words.size() == 1 && answerLen > 14) {
+            String s = puzzle.getKey();
+            words.clear();
+            words.add(s.substring(0, s.indexOf('-') + 1));
+            words.add(s.substring(s.indexOf('-') + 1, s.length()));
+        }
+
+        // Disable most buttons (settings, etc.)
+        startButtonStates();
 
         // Initialize animations
         animation = new Animators(words, noRSTLNE, fastMode);
@@ -139,13 +183,17 @@ public class Game {
         Animators.spaces = board.getChildren();
         // Reset labels to be invisible/cleared
         clearLabels();
-        
-        // Get answer length
-        int answerLen = puzzle.getKey().length();
 
         // Begin music cues
-        rstlne.play(1, true);
-        chooseLetters.stop();
+        if (endlessMode) {
+            if (!speedUp.isPlaying()) {
+                speedUp.play(1, true);
+            }
+        } else {
+            rstlne.play(1, true);
+            chooseLetters.stop();
+        }
+        
 
         // Begin puzzle layout calculation
         bonusGameFunctionality.calculateWordPosition(words, answerLen);
@@ -158,8 +206,7 @@ public class Game {
     private void requestStop() {
         // Request to stop all animations (each animation method will check for the static variable Animators.requestedStop)
         Animators.requestedStop = true;
-        // Clear board
-
+        endlessKeepGoing = false;
         
         // Reset labels to be invisible/cleared
         clearLabels();
@@ -171,12 +218,17 @@ public class Game {
 
         // Reset answer field if filled
         answerField.setText("");
+
+        // Reset endless streak
+        endlessStreak = 0;
+
         // Stop music, play buzzer
         rstlne.stop();
         chooseLetters.stop();
         if (!buzzer.isPlaying()) {
             buzzer.play(0.4f);
         }
+        speedUp.stop();
     }
 
     @FXML
@@ -219,12 +271,23 @@ public class Game {
     @FXML
     private void enterAnswer() {
         if (answerField.getText().compareTo(puzzle.getKey()) == 0) {
+            // Display game win label
             setOutcome(true);
             outcomePane.setVisible(true);
+
+            // Stop all previous animators
             Animators.requestedStop = true;
-            stopButtonStates();
-            win.play(0.4f);
-            chooseLetters.stop();
+
+            // Check for endless mode, if so, start a new puzzle after 2 seconds
+            if (endlessMode) {
+                beginNewPuzzleTimer();
+            } else {
+                // Re-enable settings
+                stopButtonStates();
+                win.play(0.4f);
+                chooseLetters.stop();
+            }
+            
             animation.revealAnswerTimer(true);
             System.out.println("Solved!");
         }
@@ -262,9 +325,41 @@ public class Game {
         if (wordCountCheckBox.isSelected()) {
             specificWordCount = true;
             wordCountSlider.setDisable(false);
+
+            seasonCheckBox.setSelected(false);
+            seasonTextField.setDisable(true);
+            specificSeason = false;
         } else {
             specificWordCount = false;
             wordCountSlider.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void modifySeason() {
+        if (seasonCheckBox.isSelected()) {
+            specificSeason = true;
+            seasonTextField.setDisable(false);
+
+            wordCountCheckBox.setSelected(false);
+            wordCountSlider.setDisable(true);
+            specificWordCount = false;
+        } else {
+            specificSeason = false;
+            seasonTextField.setDisable(true);
+        }
+    }
+    @FXML
+    private void restoreSeasonTextField() {
+        seasonTextField.setStyle("");
+    }
+
+    @FXML
+    private void modifyEndlessMode() {
+        if (endlessModeCheckBox.isSelected()) {
+            endlessMode = true;
+        } else {
+            endlessMode = false;
         }
     }
 
@@ -283,14 +378,39 @@ public class Game {
     }
 
     private void setOutcome(boolean gameWon) {
+        Label l = (Label) outcomePane.getChildren().get(outcomePane.getChildren().size() - 1);
+
+        // If the game was won...
         if (gameWon) {
-            Label l = (Label) outcomePane.getChildren().get(outcomePane.getChildren().size() - 1);
+            // ...set the outcome label to the proper win graphic, depending on if endless mode is enabled
             l.setStyle("-fx-background-color: transparent; -fx-text-fill: #222222; -fx-border-color: #222222; -fx-border-width: 4;");
-            l.setText("YOU WIN!");
+            if (endlessMode) {
+                endlessStreak++;
+                l.setFont(Font.font("Constantia", FontWeight.BOLD, 32));
+                if (endlessStreak == 1) {
+                    l.setText(String.format("Nice solve!\n%d puzzle solved.", endlessStreak));
+                } else {
+                    l.setText(String.format("Nice solve!\n%d puzzles solved.", endlessStreak));
+                }
+                
+            } else {
+                l.setFont(Font.font("Constantia", FontWeight.BOLD, 54));
+                l.setText("YOU WIN!");
+            }
         } else {
-            Label l = (Label) outcomePane.getChildren().get(outcomePane.getChildren().size() - 1);
+            // ...otherwise set the outcome label to the proper loss graphic, depending on if endless mode is enabled
             l.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-border-color: #2a905c; -fx-border-width: 4;");
-            l.setText("TIME'S UP!");
+            if (endlessMode) {
+                l.setFont(Font.font("Constantia", FontWeight.BOLD, 32));
+                if (endlessStreak == 1) {
+                    l.setText(String.format("TIME'S UP!\n%d puzzle solved.", endlessStreak));
+                } else {
+                    l.setText(String.format("TIME'S UP!\n%d puzzles solved.", endlessStreak));
+                }
+            } else {
+                l.setFont(Font.font("Constantia", FontWeight.BOLD, 54));
+                l.setText("TIME'S UP!");
+            }
         }
     }
 
@@ -344,8 +464,32 @@ public class Game {
 
             @Override
             public void handle(long now) {
-                if (now - startTime > 1000000000) {
+                // Re-enable specified button after 1 second
+                if (now - startTime > TimeUnit.MILLISECONDS.toNanos(1000)) {
                     b.setDisable(false);
+                    stop();
+                }
+            }
+            
+        }.start();
+    }
+
+    private void beginNewPuzzleTimer() {
+        new AnimationTimer() {
+            long startTime = System.nanoTime();
+
+            @Override
+            public void handle(long now) {
+                if (!endlessKeepGoing) {
+                    stop();
+                }
+                // Automatically begin a new game after 2 seconds
+                if (now - startTime > TimeUnit.MILLISECONDS.toNanos(2000)) {
+                    try {
+                        beginPuzzle();
+                    } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                        e.printStackTrace();
+                    }
                     stop();
                 }
             }

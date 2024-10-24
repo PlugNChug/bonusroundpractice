@@ -86,6 +86,34 @@ public class BonusGameBackend {
     }
 
     /**
+     * Checks the answers.csv file generated using the "Get Bonus Puzzles from the Web" button, shuffles the rows, and picks the first row
+     * with the requested season number
+     * @return A random answer and category as a pair
+     * @throws IOException
+     */
+    public Pair<String, String> snipeSeason(int season) throws IOException {
+        File file = new File("answers.csv");
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+
+        String s;
+        answers.clear();
+        while ((s = reader.readLine()) != null) {
+            if (!s.isEmpty() && Integer.parseInt(s.split(",")[2]) == season) {
+                answers.add(s);
+            }
+        }
+
+        reader.close();
+
+        Collections.shuffle(answers);
+        if (answers.isEmpty()) {
+            System.out.println("Invalid season specified, grabbing random season instead...");
+            return getRandomAnswer();
+        }
+        return new Pair<String,String>(answers.get(0).split(",")[0], answers.get(0).split(",")[1]);
+    }
+
+    /**
      * Places the given words in a reasonable manner on the puzzle board.
      * <p>The bonus round never uses the topmost and bottommost rows.
      * This also applies to toss-ups and round 4+'s.
@@ -106,8 +134,8 @@ public class BonusGameBackend {
         switch (words.size()) {
             // Very simple case: one word means only one row, guaranteed!
             case 1:
-            startPos = MIDDLE_SECOND_THIRD - (answerLen / 2);
-                animation.animateReveal(words.get(0), SECOND_ROW, startPos);
+                    startPos = MIDDLE_SECOND_THIRD - (answerLen / 2);
+                    animation.animateReveal(words.get(0), SECOND_ROW, startPos);
                 break;
             // Two word answers go through a much more complicated process since they have many more cases
             case 2:

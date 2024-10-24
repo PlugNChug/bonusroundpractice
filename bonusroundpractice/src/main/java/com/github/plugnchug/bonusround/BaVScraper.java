@@ -16,7 +16,7 @@ public class BaVScraper {
 
     private static List<String> seasonPageUrlList = Collections.synchronizedList(new ArrayList<>());
 
-    private static Set<Pair<String, String>> bonusAnswers = new HashSet<>();
+    private static Set<Puzzle<String, String, Integer>> bonusAnswers = new HashSet<>();
 
     /**
      * Performs a web scrape of the Buy a Vowel Boards website to obtain all bonus round answers and categories
@@ -46,10 +46,10 @@ public class BaVScraper {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
         for (var a : bonusAnswers) {
-            if (a.getKey().isEmpty() || a.getValue().isEmpty() || a.getValue().equals("N/A")) {
+            if (a.getAnswer().isEmpty() || a.getCategory().isEmpty() || a.getCategory().equals("N/A")) {
                 continue;
             }
-            writer.write(a.getKey() + "," + a.getValue() + "\n");
+            writer.write(a.getAnswer() + "," + a.getCategory() + "," + a.getSeason() + "\n");
         }
         writer.close();
     }
@@ -71,8 +71,10 @@ public class BaVScraper {
             seasonPageUrlList.add(e.absUrl("href"));
         }
 
-        // Removes the missing/incomplete link
-        seasonPageUrlList.remove(seasonPageUrlList.size() - 1);
+        // Removes the special links
+        for (int i = 0; i < 6; i++) {
+            seasonPageUrlList.remove(seasonPageUrlList.size() - 1);
+        }
     }
 
     /*
@@ -81,13 +83,21 @@ public class BaVScraper {
     private static void scrapeSeasonPage(String page) throws IOException {
         final Document document = Jsoup.connect(page).get();
 
+        char c = page.charAt(page.length() - 1);
+        int counter = 2;
+        while (Character.isDigit(c)) {
+            c = page.charAt(page.length() - counter);
+            counter++;
+        }
+        int season = Integer.parseInt(page.substring(page.length() - counter + 2, page.length()));
+
 
         // In BaV boards, post links are nested in a link (a) of class "thread-link".
         Element table = document.select("div.widget-content").last();
         Elements days = table.select("tr[style='background-color:#5ab473']");
         for (Element bonusContents : days) {
-            // In the pair, the answer is the key (lol) and the category is the value
-            bonusAnswers.add(new Pair<String,String>(bonusContents.select("td").get(0).ownText(), bonusContents.select("td").get(1).ownText()));
+            // A given puzzle will have an answer, category, and season associated with it
+            bonusAnswers.add(new Puzzle<String, String, Integer>(bonusContents.select("td").get(0).ownText(), bonusContents.select("td").get(1).ownText(), season));
         }
     }
 

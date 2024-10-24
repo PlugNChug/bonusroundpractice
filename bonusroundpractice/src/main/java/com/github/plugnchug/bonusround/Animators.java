@@ -1,13 +1,20 @@
 package com.github.plugnchug.bonusround;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 public class Animators {
@@ -217,7 +224,7 @@ public class Animators {
                             }
                         }
                     }
-                    // If the palyer does solve the puzzle
+                    // If the player does solve the puzzle
                     else {
                         initializeLetterAssignments(words);
                         initialized = true;
@@ -229,9 +236,11 @@ public class Animators {
                             // Stop if no letters were revealed
                             if (!letterRevealed) {
                                 System.out.println("Answer revealed!");
-                                stopRoundButton.setDisable(true);
-                                beginPuzzleButton.setDisable(false);
-                                settings.setDisable(false);
+                                if (!Game.endlessMode) {
+                                    stopRoundButton.setDisable(true);
+                                    beginPuzzleButton.setDisable(false);
+                                    settings.setDisable(false);
+                                }
                                 stop();
                             }
                         }
@@ -246,8 +255,10 @@ public class Animators {
             private void chooseLettersTransition() {
                 switch (context) {
                     case 0:
-                        Game.rstlne.stop();
-                        Game.chooseLetters.play(0.6f, true, 56494);
+                        if (!Game.endlessMode) {
+                            Game.rstlne.stop();
+                            Game.chooseLetters.play(0.6f, true, 56494);
+                        }
                         enableHBoxes();
                         break;
                     case 1:
@@ -297,8 +308,10 @@ public class Animators {
                 int counter = 0;
                 for (String word : words) {
                     for (char letter : word.toCharArray()) {
-                        letterAssignments.add(new Pair<>(letter, whiteSpacePositions.get(counter)));
-                        counter++;
+                        if (!requestedStop) {
+                            letterAssignments.add(new Pair<>(letter, whiteSpacePositions.get(counter)));
+                            counter++;
+                        }
                     }
                 }
             }
@@ -504,8 +517,10 @@ public class Animators {
                 }
                 // Initial stuff
                 if (startTime == 0) {
-                    Game.chooseLetters.stop();
-                    Game.bonusClock.play(0.3f);
+                    if (!Game.endlessMode) {
+                        Game.chooseLetters.stop();
+                        Game.bonusClock.play(0.3f);
+                    }
                     countdownText.setVisible(true);
                     startTime = now;
                 }
@@ -518,11 +533,22 @@ public class Animators {
                         startTime = now;
                     }
                 } else {
+                    // Show time up label
                     outcomePane.setVisible(true);
+
+                    // Play/stop relevant SFX
                     Game.doubleBuzzer.play(1);
+                    Game.speedUp.stop();
+
+                    // Reset endless streak
+                    Game.endlessStreak = 0;
+
+                    // Reset answer field
                     answerField.setText("");
                     answerField.setDisable(true);
                     enterAnswerButton.setDisable(true);
+
+                    // Call reveal answer timer (slow letter appearances because of time up)
                     revealAnswerTimer(false);
                     stop();
                 }
@@ -549,12 +575,12 @@ public class Animators {
                     startTime = now;
                 }
 
-                
+                long elapsedTime = now - startTime;
+
                 // Case where player fails to solve the puzzle when the countdown expires
                 if (!solved) {
-                    long elapsedTime = now - startTime;
-                    // Slowly reveal answer 1.5 seconds after countdown expires
                     if (elapsedTime >= TimeUnit.MILLISECONDS.toNanos(1500)) {
+                        // Slowly reveal answer 1.5 seconds after countdown expires
                         animateLetters(allLetters, 2, true);
                         stop();
                     }
