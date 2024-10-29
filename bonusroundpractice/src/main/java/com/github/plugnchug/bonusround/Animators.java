@@ -98,15 +98,15 @@ public class Animators {
                     }
 
                     // Note this only deals with one row: the row given in the parameters.
-                    // This is why we call this method twice when an answer needs two rows
+                    // This is why we call this method twice when an answer needs two rows, etc.
                     if (now > startTime + TimeUnit.MILLISECONDS.toNanos(delay)) {
                         // Display any special characters automatically...
-                        if (!Character.isLetter(words.toCharArray()[position]) && words.toCharArray()[position] != ' ') {
+                        if (!words.isEmpty() && !Character.isLetter(words.toCharArray()[position]) && words.toCharArray()[position] != ' ') {
                             spaces.get(row + startPos + position).setVisible(true);
                             ((Label) spaces.get(row + startPos + position)).setText(Character.toString(words.toCharArray()[position]));
                         }
                         //...but don't activate tiles where a space would be!
-                        if (words.toCharArray()[position] != ' ') {
+                        if (!words.isEmpty() && words.toCharArray()[position] != ' ') {
                             spaces.get(row + startPos + position).setVisible(true);
                         }
                         startTime = now;
@@ -133,8 +133,8 @@ public class Animators {
             boolean revealStarted = false;
 
             List<Pair<Character, Integer>> letterAssignments = new ArrayList<>();
-            List<Integer> revealOrder = Arrays.asList(25, 39, 24, 38, 23, 37, 22, 36, 21, 35, 20, 34, 19, 33, 18, 32, 17, 31, 16, 30, 15, 29, 14, 28, 13, 27, 12, 26);
-            List<Integer> reverseReveal = Arrays.asList(26, 12, 27, 13, 28, 14, 29, 15, 30, 16, 31, 17, 32, 18, 33, 19, 34, 20, 35, 21, 36, 22, 37, 23, 38, 24, 39, 25);
+            List<Integer> revealOrder = Arrays.asList(25, 39, 11, 24, 38, 51, 10, 23, 37, 50, 9, 22, 36, 49, 8, 21, 35, 48, 7, 20, 34, 47, 6, 19, 33, 46, 5, 18, 32, 45, 4, 17, 31, 44, 3, 16, 30, 43, 2, 15, 29, 42, 1, 14, 28, 41, 0, 13, 27, 40, 12, 26);
+            List<Integer> reverseReveal = Arrays.asList(26, 12, 40, 27, 13, 0, 41, 28, 14, 1, 42, 29, 15, 2, 43, 30, 16, 3, 44, 31, 17, 4, 45, 32, 18, 5, 46, 33, 19, 6, 47, 34, 20, 7, 48, 35, 21, 8, 49, 36, 22, 9, 50, 37, 23, 10, 51, 38, 24, 11, 39, 25);
 
             @Override
             public void handle(long now) {
@@ -504,7 +504,7 @@ public class Animators {
     private void guessTimer() {
         new AnimationTimer() {
             long startTime = 0;
-            Integer counter = 10;
+            Integer counter = Game.customTimer == 0 ? 10 : Game.customTimer;
 
             // Automatic countdown timer starts
             @Override
@@ -515,25 +515,27 @@ public class Animators {
                     enterAnswerButton.setDisable(true);
                     countdownText.setVisible(false);
                     Game.bonusClock.stop();
+                    Game.bonusClockEnd.stop();
                     stop();
                 }
                 // Initial stuff
                 if (startTime == 0) {
                     if (!Game.endlessMode) {
                         Game.chooseLetters.stop();
-                        Game.bonusClock.play(0.3f);
+                        Game.bonusClock.play(0.3f, true);
                     }
                     countdownText.setVisible(true);
                     startTime = now;
                 }
                 
-                if (counter > 0) {
-                    countdownText.setText(counter.toString());
-                    long elapsedTime = now - startTime;
-                    if (elapsedTime >= TimeUnit.SECONDS.toNanos(1)) {
-                        counter--;
-                        startTime = now;
+                if (TimeUnit.SECONDS.toNanos(counter) - (System.nanoTime() - startTime) > 0) {
+                    if (Math.floorDiv(TimeUnit.SECONDS.toNanos(counter + 1) - (System.nanoTime() - startTime), TimeUnit.SECONDS.toNanos(1)) == 1) {
+                        Game.bonusClock.stop();
+                        if (!Game.bonusClockEnd.isPlaying()) {
+                            Game.bonusClockEnd.play(0.3f);
+                        }
                     }
+                    countdownText.setText(((Long) Math.floorDiv(TimeUnit.SECONDS.toNanos(counter + 1) - (System.nanoTime() - startTime), TimeUnit.SECONDS.toNanos(1))).toString());
                 } else {
                     // Show time up label
                     outcomePane.setVisible(true);

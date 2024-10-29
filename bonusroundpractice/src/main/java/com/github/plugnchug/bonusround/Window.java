@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+
 import javax.sound.sampled.*;
 import javafx.stage.Stage;
 
@@ -14,6 +16,7 @@ import java.io.IOException;
  */
 public class Window extends Application {
     private static Scene scene;
+    public static Stage window;
 
     @Override
     public void start(Stage stage) throws IOException, LineUnavailableException {
@@ -23,6 +26,7 @@ public class Window extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Bonus Round Practice");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
         stage.show();
     }
 

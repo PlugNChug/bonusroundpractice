@@ -99,16 +99,14 @@ public class BaVScraper {
         }
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
+    //     try {
+    //         scrapeSeasons("https://buyavowel.boards.net/page/compendiumindex");
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
 
-        // GetDecadeRecap("https://buyavowel.boards.net/thread/17400/season-31-40-recap-directory");
-        try {
-            scrapeSeasons("https://buyavowel.boards.net/page/compendiumindex");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(bonusAnswers.size() + " bonus answers loaded");
-        System.out.println(MAX_THREADS + " threads");
-    }
+    //     System.out.println(bonusAnswers.size() + " bonus answers loaded");
+    //     System.out.println(MAX_THREADS + " threads");
+    // }
 }

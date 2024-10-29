@@ -9,11 +9,18 @@ import javax.sound.sampled.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 public class Game {
@@ -28,6 +35,7 @@ public class Game {
     public static Sounds rstlne = new Sounds("sounds/rstlne.wav");
     public static Sounds chooseLetters = new Sounds("sounds/chooseLetters2.wav");
     public static Sounds bonusClock = new Sounds("sounds/bonusClock.wav");
+    public static Sounds bonusClockEnd = new Sounds("sounds/bonusClockEnd.wav");
     public static Sounds win = new Sounds("sounds/win.wav");
     public static Sounds speedUp = new Sounds("sounds/speedUp.wav");
 
@@ -38,6 +46,8 @@ public class Game {
     public static boolean specificWordCount = false;
     public static boolean specificSeason = false;
     public static boolean endlessMode = false;
+    public static boolean customPuzzle = false;
+    public static int customTimer = 0;
 
     // Animation/behind the scenes helpers
     Animators animation;
@@ -80,6 +90,8 @@ public class Game {
     @FXML
     CheckBox fastModeCheckBox;
     @FXML
+    CheckBox endlessModeCheckBox;
+    @FXML
     CheckBox wordCountCheckBox;
     @FXML
     Slider wordCountSlider;
@@ -88,7 +100,13 @@ public class Game {
     @FXML
     TextField seasonTextField;
     @FXML
-    CheckBox endlessModeCheckBox;
+    CheckBox customPuzzleCheckBox;
+    @FXML
+    Button customPuzzleButton;
+    @FXML
+    CheckBox timerCheckBox;
+    @FXML
+    TextField timerTextField;
 
     // Buttons/display elements
     @FXML
@@ -136,10 +154,28 @@ public class Game {
         // Initialize the game's backend stuff
         bonusGameFunctionality = new BonusGameBackend(noRSTLNE, enableWildCard);
 
-        // Get a random puzzle
-        if (specificWordCount) {
+        // If custom timer is enabled, make sure the time entered is a integer-parseable number
+        if (timerCheckBox.isSelected()) {
+            try {
+                customTimer = Integer.parseInt(timerTextField.getText());
+            } catch (NumberFormatException e) {
+                timerTextField.setStyle("-fx-border-color: red;");
+                return;
+            }
+        }
+
+        // Get a puzzle
+        if (customPuzzle) {
+            String answer = CustomPuzzleWindow.topRow + " " + CustomPuzzleWindow.topMiddleRow + " " + CustomPuzzleWindow.bottomMiddleRow + " " + CustomPuzzleWindow.bottomRow;
+            // Remove duplicate spaces
+            answer.replaceAll("  ", " ");
+            puzzle = new Pair<String, String> (answer.strip(), CustomPuzzleWindow.category);
+            System.out.println(puzzle.getKey());
+        } else if (specificWordCount) {
+            // If specific word count is enabled, call the special method that gets only puzzles with the word count
             puzzle = bonusGameFunctionality.snipeWordCount((int) Math.round(wordCountSlider.getValue()));
         } else if (specificSeason) {
+            // If specific season is enabled, make sure the season entered is a integer-parseable number
             int season = 0;
             try {
                 season = Integer.parseInt(seasonTextField.getText());
@@ -321,6 +357,18 @@ public class Game {
     }
 
     @FXML
+    private void modifyEndlessMode() {
+        if (endlessModeCheckBox.isSelected()) {
+            endlessMode = true;
+
+            customPuzzleCheckBox.setSelected(false);
+            customPuzzle = false;
+        } else {
+            endlessMode = false;
+        }
+    }
+
+    @FXML
     private void modifyWordCount() {
         if (wordCountCheckBox.isSelected()) {
             specificWordCount = true;
@@ -329,6 +377,9 @@ public class Game {
             seasonCheckBox.setSelected(false);
             seasonTextField.setDisable(true);
             specificSeason = false;
+
+            customPuzzleCheckBox.setSelected(false);
+            customPuzzle = false;
         } else {
             specificWordCount = false;
             wordCountSlider.setDisable(true);
@@ -344,23 +395,67 @@ public class Game {
             wordCountCheckBox.setSelected(false);
             wordCountSlider.setDisable(true);
             specificWordCount = false;
+
+            customPuzzleCheckBox.setSelected(false);
+            customPuzzle = false;
         } else {
             specificSeason = false;
+            seasonTextField.setStyle("-fx-border-color: transparent;");
             seasonTextField.setDisable(true);
         }
     }
+
     @FXML
-    private void restoreSeasonTextField() {
-        seasonTextField.setStyle("");
+    private void modifyTimer() {
+        if (timerCheckBox.isSelected()) {
+            timerTextField.setDisable(false);
+        } else {
+            customTimer = 0;
+            timerCheckBox.setStyle("-fx-border-color: transparent;");
+            timerTextField.setDisable(true);
+        }
     }
 
     @FXML
-    private void modifyEndlessMode() {
-        if (endlessModeCheckBox.isSelected()) {
-            endlessMode = true;
-        } else {
+    private void restoreTextField(KeyEvent event) {
+        TextField field = (TextField) event.getSource();
+        field.setStyle("");
+    }
+
+    @FXML
+    private void modifyCustomPuzzle() {
+        if (customPuzzleCheckBox.isSelected()) {
+            customPuzzle = true;
+            customPuzzleButton.setDisable(false);
+
+            seasonCheckBox.setSelected(false);
+            seasonTextField.setDisable(true);
+            specificSeason = false;
+
+            wordCountCheckBox.setSelected(false);
+            wordCountSlider.setDisable(true);
+            specificWordCount = false;
+
+            endlessModeCheckBox.setSelected(false);
             endlessMode = false;
+        } else {
+            customPuzzle = false;
+            customPuzzleButton.setDisable(true);
         }
+    }
+
+    @FXML
+    private void showCustomPuzzle() throws IOException {
+        FXMLLoader customPuzzle = new FXMLLoader(getClass().getResource("custom.fxml"));
+        Parent window = customPuzzle.load();
+
+        Stage popUp = new Stage();
+        popUp.initModality(Modality.APPLICATION_MODAL);
+        popUp.initOwner(Window.window);
+        popUp.initStyle(StageStyle.UNDECORATED);
+        Scene popUpScene = new Scene(window);
+        popUp.setScene(popUpScene);
+        popUp.show();
     }
 
     private void linkAnimations() {

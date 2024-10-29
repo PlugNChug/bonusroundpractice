@@ -13,6 +13,25 @@
     -fx-background-color: gray;
 }
 
+.toggle-button {
+    -fx-background-color: lightgray;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2;
+
+}
+
+.toggle-button:hover {
+    -fx-border-color: #2a905c;
+}
+
+.toggle-button:armed {
+    -fx-background-color: gray;
+}
+
+.toggle-button:selected {
+    -fx-background-color: gray;
+}
+
 .text-field {
     -fx-background-color: #DDDDDD;
     -fx-border-color: transparent;
@@ -20,5 +39,32 @@
 }
 
 .text-field:hover {
+    -fx-border-color: #2a905c;
+}
+
+.check-box .box {
+    -fx-background-color: #DDDDDD;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2;
+}
+
+.check-box .box:hover {
+    -fx-border-color: #2a905c;
+}
+
+.slider .track {
+    -fx-background-color: #DDDDDD;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2;
+}
+
+.slider .thumb { 
+    -fx-background-color: #EEEEEE;
+    -fx-border-color: transparent;
+    -fx-border-radius: 4;
+    -fx-padding: 4;
+}
+
+.slider .thumb:hover {
     -fx-border-color: #2a905c;
 }
